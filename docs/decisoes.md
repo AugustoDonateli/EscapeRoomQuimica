@@ -79,23 +79,36 @@ uma fila física congestionada e desorganizada. A plataforma existe para:
 
 ---
 
-## 4. Decisões abertas
+## 4. Parâmetros de configuração (não são decisões do nosso grupo)
 
-| # | Questão | Status |
+Vários números deste projeto dependem de equipes que ainda não terminaram a parte delas
+(estações, enigmas, perguntas, cronograma da feira). **Nenhum deles será escrito no código.**
+Todos ficam numa tela de *Configuração do evento*, com um valor padrão provisório, e quem
+souber a informação preenche depois — em segundos, sem mexer em código.
+
+| Parâmetro | Padrão provisório | Quem decide |
 |---|---|---|
-| A | Data do evento | Indefinida — sistema deve ser configurável |
-| B | Quantas estações e quantas têm pergunta de química | Estações ainda em criação |
-| C | Quantas perguntas de química por sessão | Aberto |
-| D | Duração-alvo da sessão + tempo de reset entre sessões | Aberto — **bloqueia a matemática da fila** |
-| E | Fila virtual (posição + estimativa) vs horário fixo | Aberto — recomendação: fila virtual |
-| F | A nota individual do instrutor soma no prêmio da equipe, ou é reconhecimento separado | Aberto |
-| G | Quais são os 4 anos escolares (técnico de 4 anos? 9º + 3 do médio?) | Aberto |
-| H | Plataforma deve detectar/registrar saída de tela do jogador | Aberto |
-| I | O que exatamente os jogadores vão avaliar | Aberto |
-| J | Categoria de ranking por ano escolar: uma só, ou duas categorias | Aberto |
-| K | E-mail de todos os integrantes ou só do capitão | Aberto — recomendação: só capitão |
+| Data do evento | vazio | Organização da feira |
+| Horário de funcionamento | 08:00–14:00 | Organização da feira |
+| Duração-alvo da sessão | 20 min | Equipe das estações |
+| Tempo de reset entre sessões | 5 min | Equipe das estações |
+| Liberação da fila em lotes | manhã 08:00 / tarde 11:00 | Nosso grupo |
+| Tamanho da equipe | 2 a 6 jogadores | Organização |
+| Número de estações | criadas no painel, sem limite fixo | Equipe das estações |
+| Ordem das estações | livre ou fixa, configurável | Equipe das estações |
+| Quais estações têm pergunta | definido no painel | Equipe das perguntas |
+| Perguntas por estação | definido no painel | Equipe das perguntas |
+| Tempo limite por pergunta | 90 s | Equipe das perguntas |
+| Penalidade por dica | −5% no componente de precisão | Nosso grupo |
+| Pesos do placar | 40 / 25 / 15 / 20 | Nosso grupo |
+| Categorias de ranking | 2 categorias, corte na média de ano 2,5 (desligável) | Organização |
+| Detectar saída de tela | desligado | Nosso grupo |
+| Anos escolares participantes | 4 níveis, nomes editáveis | Escola |
 
----
+**Regra de ouro do projeto: se um número pode mudar, ele é configuração — nunca código.**
+
+Isso significa que a plataforma pode ser construída **inteira** antes de qualquer outra
+equipe terminar a parte dela. No dia em que as informações chegarem, é digitação.
 
 ## 5. Restrições técnicas conhecidas
 
@@ -200,3 +213,34 @@ Levantamento para escolher o que entra:
 - Coletar o mínimo: nome, ano escolar, e **um** e-mail de contato por equipe (proposta).
 - Informar na tela para que servem os dados.
 - Apagar os dados pessoais após a feira, mantendo apenas estatísticas anônimas.
+
+---
+
+## 11. Escopo do nosso grupo
+
+Nosso grupo é responsável **pela plataforma web, e só por ela.** Outras cinco ou seis equipes
+cuidam das estações, dos enigmas, das perguntas de química e da cenografia. O que depende
+delas está na seção 4 como parâmetro configurável, e em [`dependencias.md`](./dependencias.md)
+como pedido formal.
+
+### Dentro do nosso controle — construível sem esperar ninguém
+
+- Modelo de dados e banco
+- Cadastro de equipe e agendamento no dia da feira
+- Fila virtual: posição, estimativa ao vivo, chamada da próxima equipe, no-show
+- Check-in pelo instrutor
+- Painel do instrutor: cronômetro automático, dicas, pausa, avaliação ao vivo
+- Motor de pontuação com pesos configuráveis
+- Painel de administração: estações, perguntas, configuração do evento
+- Roteamento dos QRs das estações
+- E-mail de confirmação (Resend) + `.ics`
+- Placar ao vivo
+- Avaliação feita pelos jogadores
+- Autenticação, permissões, segurança e LGPD
+
+### Fora do nosso controle
+
+- Quantas estações existem e o que cada uma faz
+- O texto das perguntas de química
+- Data, horário e cronograma da feira
+- Regras físicas da sala e do prêmio
