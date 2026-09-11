@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Escape Químico — sistema visual (etapa 2 do plano)
+
+   Duas paletas, escolhidas por CONTEXTO FÍSICO e não pelo tema do celular:
+
+   :root   FORA DA SALA — totem, cadastro, fila, placar. A pessoa está no sol
+           da feira, então o fundo é claro. Os acentos vêm da paleta
+           "Laboratório noturno" escurecidos até terem contraste real no claro.
+
+   .sala   DENTRO DA SALA — pergunta da estação e painel do instrutor em
+           sessão. A pessoa está no escuro com pressa, então o fundo é grafite
+           e os acentos voltam ao brilho original.
+
+   Por isso NÃO existe prefers-color-scheme aqui: quem decide a cor é o lugar
+   onde a pessoa está, não a configuração do aparelho dela.
+--------------------------------------------------------------------------- */
+
+:root {
+  --cor-fundo: #f2f5f4;
+  --cor-superficie: #ffffff;
+  --cor-superficie-2: #e7edeb;
+  --cor-tinta: #101614;
+  --cor-tinta-2: #4e5b58;
+  --cor-tinta-3: #637070;
+  --cor-linha: #d5dedb;
+  --cor-linha-2: #becac7;
+  --cor-acento: #0d7263;
+  --cor-acento-suave: #dff0ec;
+  --cor-acento-2: #2b5fcc;
+  --cor-acento-2-suave: #e3eaf9;
+  --cor-alerta: #8f5400;
+  --cor-alerta-suave: #f8eeda;
+  --cor-perigo: #a01f35;
+  --cor-perigo-suave: #fae7ea;
+
+  --raio: 4px;
+
+  --fonte-display: var(--fonte-bricolage), "Segoe UI", system-ui, sans-serif;
+  --fonte-corpo: var(--fonte-plex-sans), "Segoe UI", system-ui, sans-serif;
+  --fonte-dados: var(--fonte-plex-mono), ui-monospace, "Courier New", monospace;
+}
+
+.sala {
+  --cor-fundo: #0c1211;
+  --cor-superficie: #131c1a;
+  --cor-superficie-2: #1b2624;
+  --cor-tinta: #dfe9e6;
+  --cor-tinta-2: #93a5a1;
+  --cor-tinta-3: #7a8b87;
+  --cor-linha: #1e2a28;
+  --cor-linha-2: #2b3936;
+  --cor-acento: #3fd9c4;
+  --cor-acento-suave: #0f2520;
+  --cor-acento-2: #8fb8ff;
+  --cor-acento-2-suave: #131e30;
+  --cor-alerta: #e8a64a;
+  --cor-alerta-suave: #241a0e;
+  --cor-perigo: #ff7089;
+  --cor-perigo-suave: #2a1319;
+}
+
+@theme inline {
+  --color-fundo: var(--cor-fundo);
+  --color-superficie: var(--cor-superficie);
+  --color-superficie-2: var(--cor-superficie-2);
+  --color-tinta: var(--cor-tinta);
+  --color-tinta-2: var(--cor-tinta-2);
+  --color-tinta-3: var(--cor-tinta-3);
+  --color-linha: var(--cor-linha);
+  --color-linha-2: var(--cor-linha-2);
+  --color-acento: var(--cor-acento);
+  --color-acento-suave: var(--cor-acento-suave);
+  --color-acento-2: var(--cor-acento-2);
+  --color-acento-2-suave: var(--cor-acento-2-suave);
+  --color-alerta: var(--cor-alerta);
+  --color-alerta-suave: var(--cor-alerta-suave);
+  --color-perigo: var(--cor-perigo);
+  --color-perigo-suave: var(--cor-perigo-suave);
+
+  --radius-base: var(--raio);
+
+  --font-display: var(--fonte-display);
+  --font-corpo: var(--fonte-corpo);
+  --font-dados: var(--fonte-dados);
+
+  /* Escala tipográfica fechada. Nada de tamanho inventado fora dela.
+     "placar" é o tamanho pensado para ser lido a cinco metros, na TV. */
+  --text-micro: 0.6875rem;   /* 11px — rótulos em maiúscula, mono */
+  --text-mini: 0.8125rem;    /* 13px — apoio, legenda */
+  --text-base: 0.9375rem;    /* 15px — corpo */
+  --text-medio: 1.0625rem;   /* 17px — corpo destacado */
+  --text-titulo: 1.375rem;   /* 22px — título de tela */
+  --text-grande: 2rem;       /* 32px — número importante */
+  --text-enorme: 3.5rem;     /* 56px — posição na fila, cronômetro */
+  --text-placar: 5.5rem;     /* 88px — TV, visto de longe */
+}
+
+@layer base {
+  * {
+    border-color: var(--cor-linha);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-tinta);
+    font-family: var(--fonte-corpo);
+    font-size: var(--text-base);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* O dedo erra e o teclado precisa funcionar: foco sempre visível. */
+  :focus-visible {
+    outline: 2px solid var(--cor-acento);
+    outline-offset: 2px;
+  }
+
+  /* Números que se comparam ficam alinhados na coluna. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

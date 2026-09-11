@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#0c1211"/>
+  <rect x="4.5" y="4.5" width="23" height="23" fill="none" stroke="#3fd9c4" stroke-width="2"/>
+  <text x="8" y="14" font-family="ui-monospace,monospace" font-size="6" fill="#93a5a1">2026</text>
+  <text x="8" y="25" font-family="ui-monospace,monospace" font-size="12" font-weight="600" fill="#dfe9e6">Eq</text>
+</svg>
