@@ -244,3 +244,41 @@ como pedido formal.
 - O texto das perguntas de química
 - Data, horário e cronograma da feira
 - Regras físicas da sala e do prêmio
+
+---
+
+## 12. Identidade visual escolhida
+
+Decidido no quiz visual de 11/09/2026:
+
+| Decisão | Escolha |
+|---|---|
+| Nome do produto | **Escape Químico** |
+| Tema | Claro |
+| Paleta | Laboratório noturno (grafite esverdeado, ciano frio, azul) |
+| Tipografia | Bricolage Grotesque (display) + IBM Plex Sans (texto) + IBM Plex Mono (dados) |
+| Cantos | Levemente arredondado — 4 px |
+| Fundo | Liso, sem textura |
+| Voz do texto | Direto e humano — *"Sua vez está chegando — fica por aqui!"* |
+| Marca | Número atômico (casinha da tabela periódica) |
+| Cronômetro | Proveta esvaziando (barra de líquido que baixa) |
+| Movimento | Mínimo |
+
+### Conflito a resolver
+
+**Tema claro + paleta Laboratório noturno** não fecham como escolhidos: aquela paleta nasce de
+um fundo grafite, e os acentos (ciano `#3FD9C4`, azul `#8FB8FF`) não têm contraste suficiente
+sobre fundo claro. Proposta de resolução:
+
+- **Interface clara** (totem, cadastro, fila, placar) com fundo neutro de viés frio e os acentos
+  do noturno escurecidos para contraste real: verde-ciano `#0E7C6B` e azul `#2B5FCC`.
+- **Telas de dentro da sala** (pergunta da estação, painel do instrutor em sessão) no noturno
+  de verdade, fundo grafite — que é onde aquela paleta foi feita para viver.
+
+Ou seja: o híbrido por contexto, chegando pelo caminho da paleta em vez do caminho do tema.
+
+### Consequência de "fundo liso"
+
+Sem textura de fundo, o peso da identidade passa a ser carregado por quatro coisas:
+a marca de número atômico, a proveta do cronômetro, o acento frio e a Bricolage Grotesque.
+São esses quatro detalhes que vão separar o site de um template — precisam ser bem feitos.
