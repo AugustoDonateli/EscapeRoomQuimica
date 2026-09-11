@@ -1,44 +1,164 @@
 # Plano de construção em etapas
 
-Cada etapa termina com **algo que funciona e pode ser demonstrado**. Se o tempo acabar na
-etapa 3, existe um produto na etapa 3 — não um esqueleto de sete etapas pela metade.
+Sete etapas. Cada uma termina com **algo que funciona e pode ser demonstrado** — se o tempo
+acabar na etapa 5, existe um produto na etapa 5, não um esqueleto de sete etapas pela metade.
 
-## Etapa 0 — Base e identidade
-Projeto Next.js + TypeScript, banco Supabase criado, deploy na Vercel com URL viva, tokens de
-design da seção 12 aplicados (cores, tipografia, cantos, marca).
-**Entrega:** endereço no ar, com a cara do Escape Químico e nada dentro.
+O peso está distribuído de propósito: as etapas mecânicas são curtas e diretas, e as três
+que decidem a qualidade do projeto — **o sistema visual, o motor da fila e o painel do
+instrutor** — são as mais detalhadas, porque é nelas que dá errado quando se tem pressa.
 
-## Etapa 1 — Admin e conteúdo
-Configuração do evento, cadastro de estações, cadastro de perguntas, geração da folha de QRs
-para impressão. Acesso separado para o grupo das perguntas.
+| # | Etapa | Peso |
+|---|---|---|
+| 1 | Fundação | leve |
+| 2 | Sistema visual | **pesado** |
+| 3 | Admin e conteúdo | médio |
+| 4 | Cadastro e fila | **pesado** |
+| 5 | Sessão e painel do instrutor | **o mais pesado** |
+| 6 | Pontuação e placar | médio |
+| 7 | Fechamento e ensaio geral | leve |
+
+---
+
+## Etapa 1 — Fundação · leve
+
+Encanamento. Não tem decisão de projeto nenhuma aqui, só montagem.
+
+Next.js + TypeScript, Tailwind, projeto Supabase criado, as 16 tabelas migradas, dados de
+exemplo para poder testar sem a sala existir, deploy na Vercel.
+
+**Entrega:** endereço no ar, vazio, com o banco pronto.
+
+---
+
+## Etapa 2 — Sistema visual · pesado
+
+Vem antes de qualquer tela de produto, e essa ordem é de propósito: toda etapa seguinte
+constrói telas. Refazer vinte telas depois porque a cor mudou é o desperdício mais comum
+de projeto com prazo.
+
+**2.1 — As duas paletas.** Fora da sala, fundo claro frio com os acentos do noturno
+escurecidos (verde-ciano `#0E7C6B`, azul `#2B5FCC`). Dentro da sala, grafite de verdade.
+Cada cor definida como variável, nenhuma escrita solta no meio do código.
+
+**2.2 — Escala tipográfica.** Bricolage Grotesque para títulos e números grandes, IBM Plex
+Sans para texto, IBM Plex Mono para tempo, código de equipe e pontuação. Tamanhos fechados
+numa escala e respeitados.
+
+**2.3 — A marca.** Desenhar a casinha de número atômico (símbolo grande, número pequeno no
+canto) em três tamanhos que têm exigências diferentes: ícone do navegador, canto da tela,
+e cartaz do totem impresso em A3.
+
+**2.4 — Componentes-base.** Botão em três tamanhos, incluindo o de 64 px do instrutor.
+Campo de texto, cartão, pílula de status, seletor de ano escolar por botões, aviso de rede
+caída. Cada um com estado de foco visível — o dedo erra, o teclado precisa funcionar.
+
+**2.5 — A proveta.** O cronômetro é o objeto mais visto da plataforma e merece ser um
+componente próprio, com três estados: normal, últimos cinco minutos, e tempo esgotado.
+Precisa ser legível a três metros de distância.
+
+**2.6 — Teste dos extremos.** A mesma tela no sol e no escuro. Contraste conferido de
+verdade, não no olhômetro. Alvo de toque medido em celular real, não no navegador do
+computador.
+
+**Entrega:** uma página `/estilo` com todos os componentes juntos. É onde a gente discute
+e ajusta o visual **antes** de existir tela de produto — muito mais barato de mudar ali.
+
+---
+
+## Etapa 3 — Admin e conteúdo · médio
+
+Vem cedo porque todo o resto lê estes dados.
+
+Configuração do evento (todos os parâmetros da seção 4 da ata), cadastro de estações com
+ordem e peso, cadastro de perguntas com pré-visualização de como o jogador vai ver, geração
+da folha de QRs para impressão, e o acesso separado do grupo das perguntas — que entra,
+cadastra e não alcança mais nada.
+
 **Entrega:** dá para montar uma sala fictícia inteira no painel.
-*Vem primeiro porque todo o resto lê estes dados.*
 
-## Etapa 2 — Cadastro e fila
-Totem de entrada por QR/NFC, cadastro de equipe (nome, integrantes com ano, e-mail do capitão,
-consentimento), fila virtual com posição e estimativa ao vivo, capacidade do dia e liberação
-em lotes.
-**Entrega:** dá para simular vinte equipes se agendando e ver a fila se comportar.
+---
 
-## Etapa 3 — Sessão e painel do instrutor
-Check-in, cronômetro automático, QR das estações servindo as perguntas, contador de dicas,
-pausa, registro de observações por toque.
-**Entrega:** uma sessão completa, jogável de celular, do início ao encerramento.
+## Etapa 4 — Cadastro e fila · pesado
 
-## Etapa 4 — Pontuação e placar
-Motor de pontuação com pesos configuráveis, tela de fechamento com rubrica pré-sugerida,
-placar público para TV e placar com auditoria.
-**Entrega:** o sistema aponta um vencedor e explica de onde veio cada ponto.
+Aqui mora a regra de negócio mais difícil do projeto. Não é tela, é lógica.
 
-## Etapa 5 — Avaliação e e-mail
-Avaliação feita pelos jogadores (formulário definido no painel), relatório da sessão,
-e-mail de confirmação com convite de calendário.
-*Depende da questão de domínio de e-mail — ver bloqueios.*
+**4.1 — Cadastro em três passos.** Equipe → integrantes → confirmação. Menos teclado
+possível: ano escolar por botões, um único e-mail obrigatório.
 
-## Etapa 6 — Endurecimento
-Revisão de permissões e RLS, limite de tentativas, PWA e resistência a queda de Wi-Fi no
-painel do instrutor, ensaio geral com pessoas de verdade.
-**Entrega:** plataforma pronta para um dia de feira com gente nervosa usando.
+**4.2 — Código da equipe e o roteador.** O celular guarda o código; a raiz `/` decide sozinha
+onde a pessoa cai (cadastro, fila, estação, avaliação). O jogador nunca escolhe para onde ir.
+
+**4.3 — Motor da fila.** Posição, lote da manhã e da tarde, capacidade do dia calculada a
+partir da duração e do reset, e encerramento automático quando o dia enche.
+
+**4.4 — Estimativa que se corrige.** A previsão da vez usa a duração real observada no dia,
+não o número configurado. É isso que impede o efeito cascata quando uma sessão estoura.
+
+**4.5 — Regras de exceção.** Ausência depois da chamada, cancelamento, equipe duplicada,
+fila cheia, pessoa que perdeu o código. Cada uma com comportamento decidido **antes**,
+não improvisado no dia.
+
+**4.6 — Tempo real.** A página da fila se atualizando sozinha, sem a pessoa recarregar.
+
+**Entrega:** simulação de vinte equipes se agendando, com a fila se comportando direito.
+
+---
+
+## Etapa 5 — Sessão e painel do instrutor · o mais pesado
+
+A etapa mais difícil e a que mais aparece no dia da feira. Se algo vai dar problema ao vivo,
+vai ser aqui.
+
+**5.1 — Check-in e início.** Confirmar presença, validar os anos declarados, abrir a sessão.
+
+**5.2 — Cronômetro no servidor.** O tempo **não** pode viver no celular: se o instrutor
+recarregar a página, o cronômetro não pode zerar. O servidor guarda o instante de início e
+o celular só desenha.
+
+**5.3 — Roteamento do QR.** Estação lida → confere sessão ativa, estação liberada e ordem →
+serve a pergunta. Toda a proteção contra abrir pergunta fora de hora está aqui.
+
+**5.4 — A pergunta.** Tempo limite, tentativas, registro de cada resposta com quanto tempo
+levou.
+
+**5.5 — Cronometragem automática por estação.** Abrir a estação seguinte fecha a anterior
+sozinha. É o que entrega tempo por estação sem ninguém anotar nada.
+
+**5.6 — Observações por toque.** Os botões L/A/E nos jogadores, com fila local: se o Wi-Fi
+cair no meio da sessão, o toque não se perde — sobe quando a rede volta.
+
+**5.7 — Dica, pausa, encerramento, aborto.** Inclusive o caso feio: sessão que precisa ser
+interrompida no meio.
+
+**5.8 — Fechamento.** Rubrica de 1 a 5 já pré-sugerida pelos toques da sessão; o instrutor
+só ajusta e confirma.
+
+**Entrega:** uma sessão completa, jogável de celular, do check-in ao fechamento.
+
+---
+
+## Etapa 6 — Pontuação e placar · médio
+
+Curto em código, delicado em consequência: é o que decide o prêmio.
+
+Motor que calcula as quatro parcelas e guarda cada uma separada. Categorias e regra de
+desempate. Placar público para TV — que é o único desenho pensado para ser visto de longe,
+e por isso pede mais cuidado visual que o resto. Placar com auditoria, mostrando de onde
+veio cada ponto.
+
+**Entrega:** o sistema aponta um vencedor e explica o resultado parcela por parcela.
+
+---
+
+## Etapa 7 — Fechamento e ensaio geral · leve
+
+Avaliação feita pelo jogador (com as perguntas definidas no painel, então não depende de
+decisão agora), relatório da sessão, e o e-mail de confirmação com convite de calendário —
+este último só se houver domínio (ver bloqueios).
+
+E o ensaio: revisão das permissões no banco, limite de tentativas, comportamento com Wi-Fi
+caindo, e **uma rodada com pessoas de verdade que não participaram do projeto.** Essa última
+parte não é opcional — é onde aparecem os problemas que a gente não consegue enxergar.
 
 ---
 
@@ -66,7 +186,7 @@ para avisar cem visitantes. Três saídas:
 3. **Não enviar e-mail.** A página da fila já se atualiza ao vivo e o instrutor chama em voz
    alta. O e-mail passa a ser só confirmação do cadastro, opcional.
 
-A etapa 5 é a única que depende disso. Todas as outras seguem sem resposta.
+Só a etapa 7 depende disso. As outras seis seguem sem resposta.
 
 ### 4. Quem mexe no código
 Se mais alguém do grupo vai programar, vale combinar branch por pessoa. Se é só você,
