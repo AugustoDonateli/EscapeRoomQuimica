@@ -1,0 +1,202 @@
+# Escape Room de Química — Documento de Decisões
+
+> **Ata viva do projeto.** Registro das decisões tomadas, das que ainda estão abertas e das
+> restrições técnicas descobertas. Ainda **não existe código de plataforma** — nada será
+> implementado antes de autorização explícita.
+>
+> Última atualização: 2026-09-11
+
+---
+
+## 1. Contexto
+
+Feira de ciências da escola. A sala toda está construindo um **escape room de química**:
+vários grupos, cada um responsável por uma parte (estações, enigmas, perguntas, cenografia).
+Tudo é baseado em conhecimento de química, não apenas em demonstração.
+
+**Nosso grupo é responsável pela plataforma web** que sustenta a operação da sala.
+
+### O problema real que a plataforma resolve
+
+A demanda de equipes é muito maior que a capacidade da sala. Sem sistema, a feira vira
+uma fila física congestionada e desorganizada. A plataforma existe para:
+
+1. **Organizar a fila/agendamento** no dia da feira
+2. **Avaliar as equipes em tempo real** pelos instrutores, de forma justa (há prêmio)
+3. **Servir as perguntas de química** nas estações, via QR
+4. **Coletar a avaliação dos jogadores** sobre a experiência
+5. **Avisar a equipe** quando a vez dela está chegando
+
+---
+
+## 2. Papéis
+
+| Papel | Quem | Acesso |
+|---|---|---|
+| **Admin** | Nosso grupo | Tudo: estações, perguntas, configuração, placar |
+| **Autor de conteúdo** | Grupo das perguntas | Cadastrar e editar perguntas de química |
+| **Instrutor** | Monitores da sala | Conduzir sessão, cronometrar, avaliar equipe e jogadores |
+| **Jogador** | Visitantes da feira | Agendar, acompanhar fila, responder perguntas, avaliar |
+| **Público** | Feira | Placar ao vivo (TV/projetor) |
+
+---
+
+## 3. Decisões fechadas
+
+### 3.1 Nível de dificuldade
+- **Nível único** para todas as perguntas. Não haverá adaptação por ano escolar.
+  *Motivo: sistema de níveis geraria confusão operacional.*
+- **Consequência aceita:** a justiça entre anos escolares deixa de vir do banco de perguntas
+  e passa a vir (a) do desenho das perguntas e (b) da categorização do ranking.
+
+### 3.2 Agendamento
+- **Só no dia da feira.** Não há agendamento antecipado.
+- O visitante chega, acessa a plataforma (QR/NFC em um totem na entrada) e cadastra a equipe.
+- Dados do cadastro: **nome da equipe**, **integrantes**, **e-mail**, **ano escolar de cada integrante**.
+
+### 3.3 Notificações
+- **E-mail via Resend** + convite de calendário (`.ics`).
+- **WhatsApp:** sem API oficial (exige conta Meta Business verificada e é paga).
+  Se necessário, apenas link `wa.me` pré-preenchido, disparado manualmente pelo organizador.
+
+### 3.4 Prêmio
+- **Por equipe.**
+
+### 3.5 Perguntas
+- Abertas por **QR code** nas estações.
+- **Não é permitido pesquisar na internet** durante a sessão.
+- O grupo das perguntas **terá acesso ao painel** para cadastrar o conteúdo.
+
+### 3.6 Avaliação
+- O **instrutor avalia em tempo real**, durante a sessão.
+- Avalia tanto a equipe quanto **o desempenho de cada jogador dentro da equipe**.
+- Os **jogadores também avaliam** (o que exatamente, ainda em definição).
+
+### 3.7 Infraestrutura
+- Há **Wi-Fi** na sala.
+- **Cada jogador tem celular.**
+- A plataforma precisa ser **segura** (requisito explícito).
+
+---
+
+## 4. Decisões abertas
+
+| # | Questão | Status |
+|---|---|---|
+| A | Data do evento | Indefinida — sistema deve ser configurável |
+| B | Quantas estações e quantas têm pergunta de química | Estações ainda em criação |
+| C | Quantas perguntas de química por sessão | Aberto |
+| D | Duração-alvo da sessão + tempo de reset entre sessões | Aberto — **bloqueia a matemática da fila** |
+| E | Fila virtual (posição + estimativa) vs horário fixo | Aberto — recomendação: fila virtual |
+| F | A nota individual do instrutor soma no prêmio da equipe, ou é reconhecimento separado | Aberto |
+| G | Quais são os 4 anos escolares (técnico de 4 anos? 9º + 3 do médio?) | Aberto |
+| H | Plataforma deve detectar/registrar saída de tela do jogador | Aberto |
+| I | O que exatamente os jogadores vão avaliar | Aberto |
+| J | Categoria de ranking por ano escolar: uma só, ou duas categorias | Aberto |
+| K | E-mail de todos os integrantes ou só do capitão | Aberto — recomendação: só capitão |
+
+---
+
+## 5. Restrições técnicas conhecidas
+
+- **NFC:** tag com URL funciona por aproximação em iPhone e Android, mas a API Web NFC
+  (ler/escrever pelo navegador) só existe no Chrome Android. **QR precisa existir sempre
+  como alternativa.**
+- **Impedir pesquisa na internet é tecnicamente impossível** em celular pessoal via site.
+  Estratégia adotada: perguntas cuja resposta depende de dados físicos da sala
+  (Google não ajuda) + cronômetro curto por pergunta.
+- **QR não precisa de leitor dentro do site.** O QR da estação é uma URL impressa; a câmera
+  nativa do celular já abre. Elimina permissão de câmera no navegador e bugs de iOS.
+- **HTTPS é obrigatório** para o fluxo de QR funcionar bem.
+- **Banco de perguntas não pode ser acessível antes do evento** — pergunta só é servida
+  com sessão ativa e estação liberada.
+- **LGPD:** dados de menores. Coletar o mínimo, informar a finalidade, apagar após o evento.
+
+---
+
+## 6. Stack proposta
+
+Critério: moderna, mas **cada peça precisa justificar sua existência**. Projeto escolar
+com data indefinida não sobrevive a excesso de dependências.
+
+| Camada | Escolha | Justificativa |
+|---|---|---|
+| Framework | Next.js 15 + TypeScript | Server Components, deploy trivial |
+| Banco / tempo real / auth | Supabase (Postgres, Realtime, RLS) | Tempo real quase de graça; segurança no banco |
+| UI | Tailwind + shadcn/ui | Tela de instrutor precisa de botão grande e rápido |
+| Validação | Zod | Nada entra no banco sem passar por regra |
+| E-mail | Resend + `.ics` | Decidido |
+| Hospedagem | Vercel | Grátis, HTTPS automático |
+| PWA | manifest + service worker | Instalável, resistente a oscilação de Wi-Fi |
+
+**Autenticação:** jogador sem senha (link mágico / código de equipe).
+Instrutor e admin com login real. Políticas de acesso no próprio Postgres (RLS).
+
+---
+
+## 7. Placar — proposta em debate
+
+Pesos iniciais, **não finais**:
+
+| Componente | Peso | Observação |
+|---|---|---|
+| Progresso | 40% | Enigmas resolvidos, ponderados por dificuldade |
+| Precisão | 25% | Acertos ÷ tentativas, com desconto fixo por dica |
+| Tempo | 15% | Relativo ao tempo-alvo, não absoluto |
+| Avaliação do instrutor | 20% | Rubrica 1–5 com descritor escrito por nota |
+
+**Regras de justiça (essas são o coração do sistema):**
+
+1. A parte subjetiva é limitada a 20% e a **rubrica é publicada antes** do jogo.
+2. **Critério de desempate definido por escrito antes:** precisão → tempo relativo → menos dicas.
+3. **Nenhum ajuste matemático invisível.** Se o placar não é explicável em uma frase para
+   quem perdeu, ele está errado.
+4. Toda nota do instrutor é rastreável até registros com hora — se houver contestação,
+   mostramos a linha do tempo.
+
+---
+
+## 8. Fila e capacidade
+
+O gargalo não é o agendamento, é a **capacidade da sala**.
+
+```
+sessões possíveis no dia = (horas de feira × 60) ÷ (duração da sessão + tempo de reset)
+```
+
+Consequências de projeto:
+
+- A plataforma deve **calcular a capacidade restante** e **encerrar os agendamentos**
+  (ou abrir lista de espera) quando o dia estiver cheio. Não prometer o que não cabe.
+- **Tempo de reset entre sessões é obrigatório** no cálculo — a sala precisa ser
+  rearmada entre equipes.
+- **No-show** é o maior risco operacional: regra de ausência definida antes
+  (chamada → X minutos → passa a vez).
+- **Check-in pelo instrutor** no momento da vez, confirmando quem veio e os anos escolares
+  declarados. Isso valida o dado autodeclarado e elimina equipe fantasma.
+
+---
+
+## 9. Funções para o instrutor (menu em aberto)
+
+Levantamento para escolher o que entra:
+
+- Cronômetro automático da sessão
+- Cronometragem por estação, **derivada dos QRs** (sem o instrutor fazer nada)
+- Botão de pausa (imprevisto) que não conta no tempo
+- Contador de dicas com penalidade automática
+- Alerta de tempo ("faltam 5 minutos")
+- Painel do estado da sala: em que estação a equipe está
+- Chamar automaticamente a próxima equipe da fila
+- Checklist de reset entre sessões
+- Registro de ocorrência (quebra de regra)
+- Relatório da sessão gerado ao final
+- Placar ao vivo para TV/projetor
+
+---
+
+## 10. Privacidade
+
+- Coletar o mínimo: nome, ano escolar, e **um** e-mail de contato por equipe (proposta).
+- Informar na tela para que servem os dados.
+- Apagar os dados pessoais após a feira, mantendo apenas estatísticas anônimas.
