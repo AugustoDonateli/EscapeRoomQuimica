@@ -17,6 +17,9 @@ instrutor** — são as mais detalhadas, porque é nelas que dá errado quando s
 | 6 | Pontuação e placar | médio |
 | 7 | Fechamento e ensaio geral | leve |
 
+**Situação: as sete etapas estão construídas.** O que falta é humano e não é código:
+publicar na Vercel, decidir o domínio de e-mail, e o ensaio com pessoas de fora do projeto.
+
 ---
 
 ## Etapa 1 — Fundação · leve

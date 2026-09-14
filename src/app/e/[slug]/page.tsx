@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { estadoParaJogador } from "@/lib/estacao";
 import { formatarTempo } from "@/components/ui/Proveta";
+import { lerConfig } from "@/lib/dados";
 import { BotaoAbrir } from "./abrir";
 import { FormularioResposta } from "./formulario";
+import { Vigilante } from "./vigilante";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Estação · Escape Químico" };
@@ -16,7 +18,10 @@ export const metadata = { title: "Estação · Escape Químico" };
  */
 export default async function PaginaEstacao({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const estado = await estadoParaJogador(slug.toUpperCase());
+  const [estado, config] = await Promise.all([
+    estadoParaJogador(slug.toUpperCase()),
+    lerConfig(),
+  ]);
 
   return (
     <div className="sala min-h-dvh bg-fundo text-tinta">
@@ -80,6 +85,9 @@ export default async function PaginaEstacao({ params }: { params: Promise<{ slug
                   feitas={estado.feitas}
                   total={estado.total}
                 />
+                {config.detectar_saida_de_tela ? (
+                  <Vigilante slug={estado.estacao.slug} />
+                ) : null}
               </div>
             )}
           </>

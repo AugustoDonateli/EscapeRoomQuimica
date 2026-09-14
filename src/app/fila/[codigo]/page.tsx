@@ -7,6 +7,7 @@ import { lerConfig } from "@/lib/dados";
 import { lerCartao } from "@/lib/fila";
 import { normalizarCodigo } from "@/lib/codigo";
 import { formatarHora } from "@/lib/tempo";
+import { emailConfigurado } from "@/lib/email";
 import { cancelarVaga } from "./acoes";
 import { Atualizador } from "@/components/Atualizador";
 
@@ -59,6 +60,7 @@ export default async function PaginaFila({
   const config = await lerConfig();
   const { equipe, jogadores, entrada, quantasNaFrente, estimativaDe, estimativaAte } = cartao;
   const chamada = entrada.status === "chamada";
+  const temEmail = emailConfigurado();
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col px-5 py-8">
@@ -144,6 +146,24 @@ export default async function PaginaFila({
           </Link>
         </div>
       )}
+
+      {entrada.status === "aguardando" ? (
+        <div className="mt-5">
+          <a
+            href={`/api/agenda/${equipe.codigo_acesso}`}
+            className="flex min-h-[48px] items-center justify-center rounded-base border border-linha-2 bg-superficie px-4 text-mini font-semibold hover:border-acento"
+          >
+            Botar no calendário do celular
+          </a>
+          <p className="mt-2 text-mini text-tinta-2">
+            O aparelho avisa vocês dez minutos antes da estimativa — funciona mesmo se o site
+            ficar fechado.{" "}
+            {temEmail
+              ? "Também mandamos a confirmação por e-mail."
+              : "Não mandamos e-mail: esta página e o aviso do celular são o lembrete."}
+          </p>
+        </div>
+      ) : null}
 
       <div className="mt-6">
         <Rotulo>Código da equipe</Rotulo>

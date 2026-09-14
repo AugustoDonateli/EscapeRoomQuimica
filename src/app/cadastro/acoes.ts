@@ -5,6 +5,7 @@ import { z } from "zod";
 import { lerConfig } from "@/lib/dados";
 import { cadastrarEquipe, estadoDoAgendamento, jaEstaNaFila, type Integrante } from "@/lib/fila";
 import { guardarCodigo } from "@/lib/sessao-jogador";
+import { enviarConfirmacao } from "@/lib/email";
 
 /**
  * Esta ação é pública: o jogador não faz login. Ações de servidor são
@@ -85,5 +86,16 @@ export async function cadastrar(
   if (!criado.ok) return { erro: criado.erro };
 
   await guardarCodigo(criado.codigo);
+
+  // O e-mail é um extra: se falhar, a equipe já está na fila e a página dela é
+  // o lugar da verdade. Nunca derruba o cadastro por causa disso.
+  void enviarConfirmacao({
+    para: email,
+    equipe: nome,
+    codigo: criado.codigo,
+    nomeEvento: config.nome_evento,
+    enderecoDoSite: process.env.NEXT_PUBLIC_SITE_URL ?? "",
+  }).catch(() => undefined);
+
   redirect(`/fila/${criado.codigo}?novo=1`);
 }

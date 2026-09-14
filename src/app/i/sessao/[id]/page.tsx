@@ -80,6 +80,11 @@ export default async function PaginaSessao({
         <span className="font-dados text-micro text-tinta-2">
           dicas: <strong className="text-tinta">{sessao.dicas}</strong>
         </span>
+        {sessao.saidasDeTela > 0 ? (
+          <span className="font-dados text-micro text-alerta">
+            saídas de tela: <strong>{sessao.saidasDeTela}</strong>
+          </span>
+        ) : null}
       </div>
 
       {!encerrada ? (

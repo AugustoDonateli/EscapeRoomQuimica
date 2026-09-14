@@ -142,3 +142,30 @@ async function talvezFecharEstacao(
     .eq("station_id", estacaoId)
     .is("concluida_em", null);
 }
+
+/**
+ * Registra que o jogador saiu da tela durante a pergunta.
+ *
+ * Existe porque a configuração tem essa chave desde a etapa 3 e ela não fazia
+ * nada — chave que não faz nada é pior que chave inexistente.
+ *
+ * Duas decisões éticas embutidas: só grava se a organização ligou a chave, e a
+ * tela avisa o jogador que isso está sendo registrado. Vigiar sem contar não
+ * dissuade ninguém e não seria honesto. E o registro é informação para o
+ * instrutor, não punição automática: ligação e notificação também fazem a tela
+ * sair de foco.
+ */
+export async function registrarSaidaDeTela(slug: string): Promise<void> {
+  const config = await lerConfig();
+  if (!config.detectar_saida_de_tela) return;
+
+  const r = await contextoDaEstacao(slug);
+  if (!r.ok) return;
+
+  const supabase = criarClienteServico();
+  await supabase.from("audit_log").insert({
+    acao: "saida_de_tela",
+    alvo: r.ctx.sessaoId,
+    depois: { estacao: r.ctx.estacao.slug },
+  });
+}

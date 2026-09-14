@@ -23,6 +23,8 @@ const ABAS: { href: string; nome: string; papeis: Papel[] }[] = [
   { href: "/admin/perguntas", nome: "Perguntas", papeis: ["admin", "autor"] },
   { href: "/admin/qrcodes", nome: "QRs para imprimir", papeis: ["admin"] },
   { href: "/admin/placar", nome: "Placar", papeis: ["admin"] },
+  { href: "/admin/avaliacao", nome: "Avaliação", papeis: ["admin"] },
+  { href: "/admin/dados", nome: "Dados pessoais", papeis: ["admin"] },
 ];
 
 export default async function LayoutAdmin({ children }: { children: React.ReactNode }) {

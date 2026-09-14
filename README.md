@@ -4,8 +4,9 @@ Plataforma da sala de fuga de química da feira de ciências. Organiza a fila do
 a sessão, serve as perguntas pelos QRs das estações e avalia as equipes em tempo real.
 
 O planejamento inteiro está em [`docs/`](./docs): [decisões](./docs/decisoes.md),
-[plano de construção](./docs/plano.md), [telas e modelo de dados](./docs/telas-e-dados.md)
-e [o que depende das outras equipes](./docs/dependencias.md).
+[plano de construção](./docs/plano.md), [telas e modelo de dados](./docs/telas-e-dados.md),
+[o que depende das outras equipes](./docs/dependencias.md) e a
+[revisão de segurança](./docs/seguranca.md).
 
 ## Como rodar
 
@@ -31,6 +32,11 @@ npm run dev                  # http://localhost:3000
 - `/cadastro` — cadastro da equipe em três passos, com um único envio no fim
 - `/fila/[codigo]` — o cartão da fila, atualizando sozinho
 - `/recuperar` — recuperar o código por nome da equipe e e-mail
+- `/resultado/[codigo]` — relatório da sessão: tempo por estação, onde travaram, de onde
+  veio cada ponto, posição no placar
+- `/avaliar/[codigo]` — avaliação anônima, com as perguntas definidas no painel
+- `/api/agenda/[codigo]` — convite de calendário (.ics), o lembrete que funciona sem
+  depender de domínio, e-mail nem API paga
 
 **Público**
 
@@ -48,6 +54,8 @@ npm run dev                  # http://localhost:3000
   mesmo componente que a sala vai usar
 - `/admin/qrcodes` — folha de cartazes para imprimir, um por estação
 - `/admin/placar` — **placar com auditoria**: de onde veio cada ponto de cada equipe
+- `/admin/avaliacao` — editar as perguntas da avaliação e ler o que as equipes responderam
+- `/admin/dados` — cumprir a promessa de LGPD feita no cadastro (anonimiza, não apaga)
 
 **Instrutor, com login**
 

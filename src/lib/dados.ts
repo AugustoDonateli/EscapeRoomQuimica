@@ -31,6 +31,7 @@ export type Config = {
   ausencia_tolerancia_min: number;
   ordem_livre: boolean;
   tentativas_por_pergunta: number;
+  perguntas_avaliacao: unknown;
 };
 
 export type Estacao = {

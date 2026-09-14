@@ -50,6 +50,7 @@ export type SessaoAoVivo = {
   }[];
   estacaoAtual: { slug: string; nome: string; ordem: number } | null;
   dicas: number;
+  saidasDeTela: number;
   acertos: number;
   tentativas: number;
 };
@@ -140,8 +141,14 @@ export async function lerSessao(id: string, config?: Config): Promise<SessaoAoVi
 
   const equipe = sessao.team as unknown as { id: string; nome: string; codigo_acesso: string };
 
-  const [{ data: jogadores }, { data: observacoes }, { data: estacoes }, { data: respostas }, { count: dicas }] =
-    await Promise.all([
+  const [
+    { data: jogadores },
+    { data: observacoes },
+    { data: estacoes },
+    { data: respostas },
+    { count: dicas },
+    { count: saidas },
+  ] = await Promise.all([
       supabase.from("player").select("id, nome, ano_escolar").eq("team_id", equipe.id).order("nome"),
       supabase.from("observation").select("player_id, tipo").eq("session_id", id),
       supabase
@@ -151,6 +158,11 @@ export async function lerSessao(id: string, config?: Config): Promise<SessaoAoVi
         .order("aberta_em"),
       supabase.from("answer").select("question_id, correta, question(station_id)").eq("session_id", id),
       supabase.from("hint").select("id", { count: "exact", head: true }).eq("session_id", id),
+      supabase
+        .from("audit_log")
+        .select("id", { count: "exact", head: true })
+        .eq("acao", "saida_de_tela")
+        .eq("alvo", id),
     ]);
 
   const pausas = (sessao.pausas ?? []) as Pausa[];
@@ -214,6 +226,7 @@ export async function lerSessao(id: string, config?: Config): Promise<SessaoAoVi
     estacoes: listaEstacoes,
     estacaoAtual: aberta ? { slug: aberta.slug, nome: aberta.nome, ordem: aberta.ordem } : null,
     dicas: dicas ?? 0,
+    saidasDeTela: saidas ?? 0,
     acertos: listaRespostas.filter((r) => r.correta).length,
     tentativas: listaRespostas.length,
   };
