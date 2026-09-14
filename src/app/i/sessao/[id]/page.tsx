@@ -114,6 +114,7 @@ export default async function PaginaSessao({
       {sessao.estacoes.length > 0 ? (
         <div className="mt-8">
           <Rotulo>Tempo por estação · sai dos QRs, ninguém anota</Rotulo>
+          <p className="mt-1 text-mini text-tinta-2">O número do meio é acertos em tentativas.</p>
           <ul className="mt-2 divide-y divide-linha border-y border-linha">
             {sessao.estacoes.map((e) => (
               <li key={e.id} className="flex items-center gap-3 py-2">
@@ -121,8 +122,11 @@ export default async function PaginaSessao({
                   {String(e.ordem).padStart(2, "0")}
                 </span>
                 <span className="min-w-0 flex-1 truncate text-base">{e.nome}</span>
-                <span className="font-dados text-micro text-tinta-2">
-                  {e.acertos}/{e.perguntas || "—"}
+                <span
+                  className="font-dados text-micro text-tinta-2"
+                  title="acertos em tentativas"
+                >
+                  {e.tentativas > 0 ? `${e.acertos}/${e.tentativas}` : "—"}
                 </span>
                 <span className="tabular font-dados text-mini font-semibold">
                   {e.segundos !== null ? formatarTempo(e.segundos) : "—"}

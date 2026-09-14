@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { registrarObservacoes } from "@/app/i/acoes";
 import { AvisoRede } from "@/components/ui/AvisoRede";
 import { OBSERVACOES, type TipoObservacao } from "@/lib/rubrica";
@@ -55,9 +55,19 @@ export function PainelDeToques({
   const [confirmados, setConfirmados] = useState<Toque[]>([]);
   const [online, setOnline] = useState(true);
 
+  /**
+   * Espelho síncrono da fila. O estado do React e a gravação no localStorage só
+   * acontecem depois da renderização, então subir logo após o toque leria a
+   * lista velha e não mandaria nada — o toque só subiria no próximo tique de
+   * três segundos. Com a referência, o envio sai no mesmo instante do toque.
+   */
+  const fila = useRef<Toque[]>([]);
+
   // Recupera o que ficou guardado de uma queda de rede anterior.
   useEffect(() => {
-    setPendentes(lerGuardados(sessaoId));
+    const guardados = lerGuardados(sessaoId);
+    fila.current = guardados;
+    setPendentes(guardados);
     setOnline(navigator.onLine);
 
     const mudou = () => setOnline(navigator.onLine);
@@ -78,7 +88,7 @@ export function PainelDeToques({
   }, [pendentes, sessaoId]);
 
   const subir = useCallback(async () => {
-    const lote = lerGuardados(sessaoId);
+    const lote = fila.current;
     if (lote.length === 0) return;
 
     try {
@@ -86,6 +96,7 @@ export function PainelDeToques({
       if (!r.ok) return;
 
       const idsSubidos = new Set(lote.map((t) => t.clienteId));
+      fila.current = fila.current.filter((t) => !idsSubidos.has(t.clienteId));
       setPendentes((atual) => atual.filter((t) => !idsSubidos.has(t.clienteId)));
       setConfirmados((atual) => [...atual, ...lote]);
       setOnline(true);
@@ -111,7 +122,10 @@ export function PainelDeToques({
         ? crypto.randomUUID()
         : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
-    setPendentes((atual) => [...atual, { clienteId, jogadorId, tipo }]);
+    const toque = { clienteId, jogadorId, tipo };
+    fila.current = [...fila.current, toque];
+    setPendentes((atual) => [...atual, toque]);
+
     if (navigator.vibrate) navigator.vibrate(12);
     void subir();
   }
@@ -146,7 +160,7 @@ export function PainelDeToques({
             <div key={j.id} className="rounded-base border border-linha bg-superficie p-3">
               <p className="truncate font-display text-medio font-bold">{j.nome}</p>
 
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="mt-2 grid grid-cols-6 gap-1.5">
                 {OBSERVACOES.map((o) => {
                   const quantos = c[o.tipo] ?? 0;
                   const marcado = quantos > 0;
@@ -159,7 +173,7 @@ export function PainelDeToques({
                       disabled={encerrada}
                       aria-label={`${o.rotulo} — ${j.nome}`}
                       title={o.rotulo}
-                      className={`flex min-h-[56px] min-w-[56px] flex-col items-center justify-center rounded-base border px-2 disabled:opacity-45 ${
+                      className={`flex min-h-[56px] flex-col items-center justify-center rounded-base border px-1 disabled:opacity-45 ${
                         marcado
                           ? o.bom
                             ? "border-acento bg-acento-suave text-acento"
