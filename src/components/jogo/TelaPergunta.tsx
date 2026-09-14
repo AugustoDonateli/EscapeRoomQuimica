@@ -32,14 +32,12 @@ export function TelaPergunta({
 
   return (
     <div className="sala rounded-base bg-fundo p-5 text-tinta">
-      <div className="flex items-center justify-between gap-3">
-        <span className="font-dados text-micro tracking-[0.12em] text-tinta-3 uppercase">
-          {estacao}
-        </span>
-        <span className="font-dados text-micro tracking-[0.12em] text-tinta-3 uppercase">
-          Escape Químico
-        </span>
-      </div>
+      {/* Só o nome da estação. A marca do projeto está em toda outra tela, mas
+          aqui dentro o jogador tem noventa segundos e nenhum pixel sobrando —
+          e ele já sabe onde está. */}
+      <p className="truncate font-dados text-micro tracking-[0.12em] text-tinta-3 uppercase">
+        {estacao}
+      </p>
 
       <Proveta
         className="mt-3"
