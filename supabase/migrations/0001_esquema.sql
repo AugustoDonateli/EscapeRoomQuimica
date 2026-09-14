@@ -117,7 +117,7 @@ create table team (
   media_ano     numeric(3,1),
   criada_em     timestamptz not null default now(),
   constraint team_nome_nao_vazio check (length(btrim(nome)) between 2 and 60),
-  constraint team_email_formato check (email_capitao ~ '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$')
+  constraint team_email_formato check (email_capitao ~ '^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$')
 );
 
 create table player (

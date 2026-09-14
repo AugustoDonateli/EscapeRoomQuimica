@@ -29,17 +29,28 @@ npm run dev                  # http://localhost:3000
 
 ## Banco de dados
 
+Projeto Supabase: **`escape-quimico`**, referência `jhbbraviyaqnfhzacsqk`, região `sa-east-1`
+(São Paulo — a mais perto de quem vai usar). O esquema e os dados de exemplo **já estão
+aplicados** lá.
+
 ```
 supabase/migrations/0001_esquema.sql   as 16 tabelas
 supabase/seed.sql                      dados de exemplo para testar sem a sala existir
 ```
 
-Rode os dois no SQL Editor do projeto Supabase, nessa ordem.
+Para recriar em outro projeto, rode os dois no SQL Editor, nessa ordem.
+
+As chaves ficam em `.env.local`, que não vai para o repositório. A URL e a chave pública
+estão no painel do Supabase em *Settings → API*; a chave de serviço fica na mesma tela e
+**só** pode aparecer no ambiente do servidor.
 
 O RLS fica ligado em tudo e só há leitura pública onde a informação é realmente pública
 (configuração do evento, estações ativas, placar). **Não existe leitura pública das
 perguntas** — se houvesse, alguém acharia as respostas antes da feira. Toda escrita passa
 pelo servidor com a chave de serviço.
+
+Conferido no banco, com a chave pública (papel `anon`): configuração do evento e estações
+aparecem; perguntas, equipes e respostas voltam **zero linhas**.
 
 ## Duas paletas, escolhidas pelo lugar
 
