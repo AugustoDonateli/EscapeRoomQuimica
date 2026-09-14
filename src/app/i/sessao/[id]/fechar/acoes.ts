@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { exigirPapel } from "@/lib/auth";
 import { criarClienteServico } from "@/lib/supabase/server";
 import { CRITERIOS } from "@/lib/rubrica";
+import { calcularEGravar } from "@/lib/placar";
 
 /**
  * Grava a rubrica do instrutor.
@@ -66,13 +67,19 @@ export async function salvarRubrica(
 
   if (error) return { erro: `O banco recusou: ${error.message}` };
 
+  // A pontuação é recalculada aqui: a nota do instrutor é a última peça que
+  // faltava, então é neste instante que a sessão passa a ter total no placar.
+  const parcelas = await calcularEGravar(sessaoId);
+
   await supabase.from("audit_log").insert({
     profile_id: perfil.id,
     acao: "rubrica_gravada",
     alvo: sessaoId,
-    depois: { notas: linhas.length },
+    depois: { notas: linhas.length, total: parcelas?.total ?? null },
   });
 
   revalidatePath(`/i/sessao/${sessaoId}/fechar`);
+  revalidatePath("/placar");
+  revalidatePath("/admin/placar");
   redirect("/i?avaliada=1");
 }

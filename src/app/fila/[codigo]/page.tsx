@@ -8,7 +8,7 @@ import { lerCartao } from "@/lib/fila";
 import { normalizarCodigo } from "@/lib/codigo";
 import { formatarHora } from "@/lib/tempo";
 import { cancelarVaga } from "./acoes";
-import { Atualizador } from "./atualizador";
+import { Atualizador } from "@/components/Atualizador";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Sua fila · Escape Químico" };

@@ -34,6 +34,8 @@ npm run dev                  # http://localhost:3000
 
 **Público**
 
+- `/placar` — o placar ao vivo para a TV ou projetor da feira
+
 - `/estilo` — **catálogo do sistema visual**: as duas paletas, a escala tipográfica, a marca,
   os componentes e o cronômetro em proveta. É onde o visual se discute antes de virar tela.
 
@@ -45,6 +47,7 @@ npm run dev                  # http://localhost:3000
 - `/admin/perguntas` — cadastrar perguntas com **prévia ao vivo da tela do jogador**, usando o
   mesmo componente que a sala vai usar
 - `/admin/qrcodes` — folha de cartazes para imprimir, um por estação
+- `/admin/placar` — **placar com auditoria**: de onde veio cada ponto de cada equipe
 
 **Instrutor, com login**
 

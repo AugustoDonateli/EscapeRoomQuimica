@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 /**
- * A página da fila se atualiza sozinha. O jogador está no meio da feira e não
+ * Páginas que se atualizam sozinhas: o cartão da fila e o placar da TV. O jogador está no meio da feira e não
  * vai ficar recarregando — e o e-mail não serve para "é a sua vez", porque
  * ninguém abre e-mail andando pela feira. A página é o lugar da verdade.
  *
@@ -12,7 +12,13 @@ import { useRouter } from "next/navigation";
  * tempo e não faz sentido gastar bateria e dados pedindo o que ninguém está
  * olhando. Ao voltar para a tela, atualiza na hora.
  */
-export function Atualizador({ segundos = 8 }: { segundos?: number }) {
+export function Atualizador({
+  segundos = 8,
+  className = "",
+}: {
+  segundos?: number;
+  className?: string;
+}) {
   const router = useRouter();
   const [desdeUltima, setDesdeUltima] = useState(0);
 
@@ -43,7 +49,7 @@ export function Atualizador({ segundos = 8 }: { segundos?: number }) {
   }, [router, segundos]);
 
   return (
-    <p className="text-center font-dados text-micro tracking-[0.12em] text-tinta-3 uppercase">
+    <p className={`text-center font-dados text-micro tracking-[0.12em] text-tinta-3 uppercase ${className}`}>
       Atualiza sozinho
     </p>
   );
