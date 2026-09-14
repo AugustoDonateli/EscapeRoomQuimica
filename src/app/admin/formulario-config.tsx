@@ -83,8 +83,9 @@ export function FormularioConfig({ config }: { config: Config }) {
         <Campo id="ausencia_tolerancia_min" name="ausencia_tolerancia_min" etiqueta="Tolerância de ausência (min)" type="number" min={1} max={30} defaultValue={config.ausencia_tolerancia_min} ajuda="Chamou, passou esse tempo, perde a vez." required />
       </Grupo>
 
-      <Grupo titulo="As perguntas" nota="Tempo padrão por pergunta e o desconto por dica.">
+      <Grupo titulo="As perguntas" nota="Tempo padrão por pergunta, tentativas e o desconto por dica.">
         <Campo id="tempo_limite_pergunta_s" name="tempo_limite_pergunta_s" etiqueta="Tempo por pergunta (s)" type="number" min={15} max={600} defaultValue={config.tempo_limite_pergunta_s} required />
+        <Campo id="tentativas_por_pergunta" name="tentativas_por_pergunta" etiqueta="Tentativas por pergunta" type="number" min={1} max={10} defaultValue={config.tentativas_por_pergunta} ajuda="Cada tentativa fica registrada e conta na precisão." required />
         <Campo id="penalidade_dica" name="penalidade_dica" etiqueta="Penalidade por dica" type="number" step="0.01" min={0} max={0.5} defaultValue={config.penalidade_dica} ajuda="0,05 desconta 5% da precisão." required />
       </Grupo>
 
@@ -102,6 +103,7 @@ export function FormularioConfig({ config }: { config: Config }) {
       <Grupo titulo="Decisões em aberto" nota="Ficam como chave, para você mudar sem mexer em código.">
         <Interruptor id="usar_categorias" name="usar_categorias" etiqueta="Ranquear em duas categorias" ajuda="Iniciante e avançado, pela média de ano da equipe." defaultChecked={config.usar_categorias} />
         <Interruptor id="nota_individual_no_premio" name="nota_individual_no_premio" etiqueta="Nota individual conta no prêmio da equipe" ajuda="Desligado, ela vira só reconhecimento — o destaque da sessão." defaultChecked={config.nota_individual_no_premio} />
+        <Interruptor id="ordem_livre" name="ordem_livre" etiqueta="A equipe pode fazer as estações em qualquer ordem" ajuda="Desligado, só a estação seguinte à última concluída abre — é o que impede ler o QR da última e pular o jogo." defaultChecked={config.ordem_livre} />
         <Interruptor id="detectar_saida_de_tela" name="detectar_saida_de_tela" etiqueta="Registrar quando o jogador sai da tela" ajuda="Dissuade pesquisa no celular, mas gera falso positivo com ligação e notificação." defaultChecked={config.detectar_saida_de_tela} />
       </Grupo>
 

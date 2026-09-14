@@ -46,6 +46,8 @@ export async function salvarConfig(
     nota_individual_no_premio: marcado(dados, "nota_individual_no_premio"),
     detectar_saida_de_tela: marcado(dados, "detectar_saida_de_tela"),
     ausencia_tolerancia_min: dados.get("ausencia_tolerancia_min"),
+    ordem_livre: marcado(dados, "ordem_livre"),
+    tentativas_por_pergunta: dados.get("tentativas_por_pergunta"),
   };
 
   const analisado = esquemaConfig.safeParse(bruto);

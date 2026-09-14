@@ -33,6 +33,8 @@ export const esquemaConfig = z
     nota_individual_no_premio: z.boolean(),
     detectar_saida_de_tela: z.boolean(),
     ausencia_tolerancia_min: z.coerce.number().int().min(1).max(30),
+    ordem_livre: z.boolean(),
+    tentativas_por_pergunta: z.coerce.number().int().min(1).max(10),
   })
   .refine((c) => c.equipe_max >= c.equipe_min, {
     message: "O tamanho máximo da equipe não pode ser menor que o mínimo.",

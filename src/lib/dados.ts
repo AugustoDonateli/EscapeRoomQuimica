@@ -29,6 +29,8 @@ export type Config = {
   nota_individual_no_premio: boolean;
   detectar_saida_de_tela: boolean;
   ausencia_tolerancia_min: number;
+  ordem_livre: boolean;
+  tentativas_por_pergunta: number;
 };
 
 export type Estacao = {

@@ -46,7 +46,21 @@ npm run dev                  # http://localhost:3000
   mesmo componente que a sala vai usar
 - `/admin/qrcodes` — folha de cartazes para imprimir, um por estação
 
-Papéis: `admin` alcança tudo; `autor` alcança **só** as perguntas; `instrutor` é a etapa 5.
+**Instrutor, com login**
+
+- `/i` — a sala agora: sessão em andamento, equipe chamada, vagas do dia
+- `/i/fila` — chamar a próxima, marcar ausência, devolver para a fila
+- `/i/checkin/[codigo]` — conferir quem veio e validar os anos declarados
+- `/i/sessao/[id]` — **a tela crítica**: cronômetro do servidor, toques de observação
+  que sobrevivem a queda de rede, dica, pausa, tempo por estação
+- `/i/sessao/[id]/fechar` — rubrica pré-sugerida pelos toques
+
+**Jogador, dentro da sala**
+
+- `/e/[slug]` — a pergunta da estação, aberta pelo QR colado na parede
+
+Papéis: `admin` alcança tudo; `autor` alcança **só** as perguntas; `instrutor` conduz as
+sessões.
 A guarda acontece em duas camadas — no middleware, antes de a página renderizar, e dentro de
 cada página e cada ação de servidor.
 
