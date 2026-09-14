@@ -135,3 +135,35 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Folha de QRs para impressão.
+
+   Este é o único lugar da plataforma que sai da tela e vai para o papel: os
+   cartazes que ficam colados em cada estação. Regras separadas porque o papel
+   tem exigências próprias — sem fundo colorido, sem cortar cartaz no meio da
+   página, e o endereço escrito por extenso para quem não conseguir ler o QR.
+--------------------------------------------------------------------------- */
+@media print {
+  .esconder-na-impressao {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .folha-qr {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12mm;
+  }
+
+  .cartaz-qr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 2px solid #000000;
+    background: #ffffff;
+  }
+}

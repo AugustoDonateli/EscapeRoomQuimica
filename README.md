@@ -23,9 +23,24 @@ npm run dev                  # http://localhost:3000
 
 ## O que já existe
 
+**Público**
+
 - `/` — página de entrada, com o andamento da construção
 - `/estilo` — **catálogo do sistema visual**: as duas paletas, a escala tipográfica, a marca,
   os componentes e o cronômetro em proveta. É onde o visual se discute antes de virar tela.
+
+**Fechado, com login** (`/entrar`)
+
+- `/admin` — configuração do evento, com a **capacidade do dia recalculada na tela** enquanto
+  se ajusta duração e reset
+- `/admin/estacoes` — criar, ordenar, pesar e desativar estações
+- `/admin/perguntas` — cadastrar perguntas com **prévia ao vivo da tela do jogador**, usando o
+  mesmo componente que a sala vai usar
+- `/admin/qrcodes` — folha de cartazes para imprimir, um por estação
+
+Papéis: `admin` alcança tudo; `autor` alcança **só** as perguntas; `instrutor` é a etapa 5.
+A guarda acontece em duas camadas — no middleware, antes de a página renderizar, e dentro de
+cada página e cada ação de servidor.
 
 ## Banco de dados
 
@@ -65,3 +80,7 @@ No código isso é a classe `sala`, que troca as variáveis de cor de tudo que e
 
 Ainda não publicado. Falta criar o projeto na Vercel, ligado a este repositório, com as
 variáveis de `.env.example` preenchidas.
+
+Depois de publicar, defina também `NEXT_PUBLIC_SITE_URL` com o endereço final — é o que vai
+dentro dos QRs impressos. Antes disso, a folha de cartazes avisa que o endereço está faltando
+em vez de gerar QR que não abre nada.

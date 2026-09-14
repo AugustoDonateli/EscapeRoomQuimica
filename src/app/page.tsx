@@ -11,7 +11,7 @@ import { Rotulo } from "@/components/ui/Cartao";
 const ETAPAS = [
   { n: 1, nome: "Fundação", estado: "pronta" },
   { n: 2, nome: "Sistema visual", estado: "pronta" },
-  { n: 3, nome: "Admin e conteúdo", estado: "a fazer" },
+  { n: 3, nome: "Admin e conteúdo", estado: "pronta" },
   { n: 4, nome: "Cadastro e fila", estado: "a fazer" },
   { n: 5, nome: "Sessão e painel do instrutor", estado: "a fazer" },
   { n: 6, nome: "Pontuação e placar", estado: "a fazer" },
