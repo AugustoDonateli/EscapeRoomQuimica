@@ -20,12 +20,20 @@ npm run dev                  # http://localhost:3000
 | `npm run dev` | Servidor de desenvolvimento |
 | `npm run build` | Build de produção |
 | `npm run typecheck` | Confere os tipos sem gerar nada |
+| `npm test` | Testes da lógica de fila, capacidade, código e fuso |
 
 ## O que já existe
 
+**Jogador, sem senha**
+
+- `/` — o totem da entrada. Também é o roteador: se o celular já guarda um código de
+  equipe ativo, a pessoa cai direto na própria fila em vez de ver esta tela
+- `/cadastro` — cadastro da equipe em três passos, com um único envio no fim
+- `/fila/[codigo]` — o cartão da fila, atualizando sozinho
+- `/recuperar` — recuperar o código por nome da equipe e e-mail
+
 **Público**
 
-- `/` — página de entrada, com o andamento da construção
 - `/estilo` — **catálogo do sistema visual**: as duas paletas, a escala tipográfica, a marca,
   os componentes e o cronômetro em proveta. É onde o visual se discute antes de virar tela.
 

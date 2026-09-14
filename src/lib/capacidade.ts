@@ -9,18 +9,20 @@
  * equipe e a próxima. Ignorar isso faz a fila mentir desde a primeira sessão.
  */
 
+/**
+ * O parser de horário é um só, compartilhado com o resto do sistema. Ter dois
+ * foi exatamente o que gerou o bug: esta função exigia hh:mm, mas coluna time
+ * do Postgres volta como hh:mm:ss — e a capacidade do dia dava zero, deixando
+ * a fila permanentemente "cheia" no site publicado.
+ */
+import { minutosDoDia } from "@/lib/tempo";
+
 export type Capacidade = {
   minutosDeFeira: number;
   minutosPorSessao: number;
   sessoes: number;
   jogadores: number;
 };
-
-function minutosDoHorario(horario: string): number | null {
-  const m = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(horario.trim());
-  if (!m) return null;
-  return Number(m[1]) * 60 + Number(m[2]);
-}
 
 export function calcularCapacidade(entrada: {
   abre_em: string;
@@ -29,8 +31,8 @@ export function calcularCapacidade(entrada: {
   reset_min: number;
   equipe_max: number;
 }): Capacidade {
-  const abre = minutosDoHorario(entrada.abre_em);
-  const fecha = minutosDoHorario(entrada.fecha_em);
+  const abre = minutosDoDia(entrada.abre_em);
+  const fecha = minutosDoDia(entrada.fecha_em);
 
   const minutosDeFeira = abre === null || fecha === null ? 0 : Math.max(0, fecha - abre);
   const minutosPorSessao = Math.max(0, entrada.duracao_sessao_min) + Math.max(0, entrada.reset_min);
@@ -43,4 +45,35 @@ export function calcularCapacidade(entrada: {
     sessoes,
     jogadores: sessoes * Math.max(0, entrada.equipe_max),
   };
+}
+
+/**
+ * A capacidade dividida entre os dois lotes.
+ *
+ * Os lotes existem por um problema que ia acontecer com certeza: com
+ * agendamento só no dia, todo mundo chega perto da abertura e o dia inteiro
+ * esgota nos primeiros vinte minutos — quem visita a feira às onze da manhã,
+ * inclusive professor e avaliador, não joga.
+ *
+ * Então o lote da manhã vende as sessões que acontecem antes da tarde abrir, e
+ * o da tarde vende o resto.
+ */
+export function capacidadePorLote(entrada: {
+  abre_em: string;
+  fecha_em: string;
+  lote_tarde_abre_em: string;
+  duracao_sessao_min: number;
+  reset_min: number;
+  equipe_max: number;
+}): { manha: number; tarde: number; total: number } {
+  const total = calcularCapacidade(entrada).sessoes;
+
+  const daManha = calcularCapacidade({
+    ...entrada,
+    fecha_em: entrada.lote_tarde_abre_em,
+  }).sessoes;
+
+  const manha = Math.min(total, daManha);
+
+  return { manha, tarde: Math.max(0, total - manha), total };
 }

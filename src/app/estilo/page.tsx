@@ -3,6 +3,7 @@ import { AvisoRede } from "@/components/ui/AvisoRede";
 import { Botao } from "@/components/ui/Botao";
 import { Campo } from "@/components/ui/Campo";
 import { Cartao, Rotulo } from "@/components/ui/Cartao";
+import { Interruptor } from "@/components/ui/Interruptor";
 import { Pilula } from "@/components/ui/Pilula";
 import { Proveta } from "@/components/ui/Proveta";
 import { SeletorAno } from "@/components/ui/SeletorAno";
@@ -276,9 +277,14 @@ export default function Estilo() {
           <Cartao>
             <Rotulo className="mb-2">Ano escolar do integrante</Rotulo>
             <SeletorAno />
-            <p className="mt-3 text-mini text-tinta-2">
+            <p className="mt-3 mb-4 text-mini text-tinta-2">
               Os anos participantes são configuráveis — é decisão da escola, não da plataforma.
             </p>
+            <Interruptor
+              id="exemplo-consentimento"
+              etiqueta="Podem guardar estes dados"
+              ajuda="A área clicável é a linha toda, não o quadradinho de 16 px."
+            />
           </Cartao>
         </div>
       </Secao>
