@@ -109,6 +109,14 @@ A cor não segue o tema do celular: segue onde a pessoa está.
 
 No código isso é a classe `sala`, que troca as variáveis de cor de tudo que está dentro dela.
 
+## Quando a publicação não abre
+
+Abra **`/diagnostico`**. Ela funciona sem login e sem banco de propósito, e diz quais
+variáveis de ambiente estão faltando e se o banco responde. O caso mais comum é
+`SUPABASE_SERVICE_ROLE_KEY` esquecida (ela não tem o prefixo `NEXT_PUBLIC_`, então passa
+batido) ou variável criada só no ambiente de Preview, sem marcar Production — e variável
+nova exige **Redeploy**, não entra numa publicação que já existe.
+
 ## Deploy
 
 Ainda não publicado. Falta criar o projeto na Vercel, ligado a este repositório, com as

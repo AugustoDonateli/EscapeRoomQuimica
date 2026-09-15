@@ -1,6 +1,8 @@
 import { Marca } from "@/components/marca/Marca";
 import { Cartao } from "@/components/ui/Cartao";
 import { FormularioEntrar } from "./formulario";
+import { faltandoNoAmbiente } from "@/lib/ambiente";
+import { FaltaConfigurar } from "@/components/FaltaConfigurar";
 
 export const metadata = { title: "Entrar · Escape Químico" };
 
@@ -10,6 +12,11 @@ export default async function Entrar({
   searchParams: Promise<{ de?: string; erro?: string }>;
 }) {
   const { de = "", erro } = await searchParams;
+
+  // O login também depende das chaves: sem elas, esta tela aceitaria a senha e
+  // quebraria depois, o que é pior que avisar antes.
+  const faltando = faltandoNoAmbiente();
+  if (faltando.length > 0) return <FaltaConfigurar faltando={faltando} />;
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-5 py-10">

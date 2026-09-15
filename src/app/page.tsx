@@ -6,6 +6,8 @@ import { Cartao, Rotulo } from "@/components/ui/Cartao";
 import { lerConfig } from "@/lib/dados";
 import { estadoDoAgendamento, lerCartao } from "@/lib/fila";
 import { lerCodigoGuardado } from "@/lib/sessao-jogador";
+import { faltandoNoAmbiente } from "@/lib/ambiente";
+import { FaltaConfigurar } from "@/components/FaltaConfigurar";
 
 /**
  * O totem da entrada — a tela que abre quando alguém lê o QR ou aproxima o
@@ -18,6 +20,11 @@ import { lerCodigoGuardado } from "@/lib/sessao-jogador";
 export const dynamic = "force-dynamic";
 
 export default async function Totem() {
+  // Antes de qualquer coisa: sem configuração, dizer o que falta em vez de
+  // estourar e deixar a Vercel mostrar "a server error occurred".
+  const faltando = faltandoNoAmbiente();
+  if (faltando.length > 0) return <FaltaConfigurar faltando={faltando} />;
+
   const guardado = await lerCodigoGuardado();
 
   if (guardado) {
