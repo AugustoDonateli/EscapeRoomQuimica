@@ -51,9 +51,14 @@ export function FaltaConfigurar({ faltando }: { faltando: string[] }) {
         </li>
       </ol>
 
+      <p className="mt-5 rounded-base bg-alerta-suave px-3 py-2.5 text-mini text-alerta">
+        Se você jura que já cadastrou tudo: o diagnóstico lista os nomes parecidos que existem no
+        ambiente. Um caractere trocado no nome é invisível no painel e é a causa mais comum.
+      </p>
+
       <Link
         href="/diagnostico"
-        className="mt-6 inline-block text-mini font-semibold text-acento underline"
+        className="mt-5 inline-block text-mini font-semibold text-acento underline"
       >
         Ver o diagnóstico completo
       </Link>

@@ -70,6 +70,30 @@ export function faltandoNoAmbiente(): string[] {
     .map((v) => v.nome);
 }
 
+/**
+ * Nomes de variável que o ambiente tem e que se parecem com configuração
+ * deste projeto, mas não são nenhum dos nomes esperados.
+ *
+ * Existe por um caso real: as variáveis estavam no painel da Vercel, a
+ * publicação era mais nova que elas, e o app insistia que faltavam. Por
+ * eliminação só sobrava erro de digitação no nome — mas ninguém acha um
+ * `SUPBASE` no meio de um `SUPABASE` olhando. O servidor acha.
+ *
+ * Só nomes, nunca valores. E só nomes que já parecem ser desta configuração,
+ * para não listar o ambiente inteiro da máquina.
+ */
+export function nomesParecidos(): string[] {
+  const esperados = new Set(
+    conferirAmbiente().flatMap((v) => [v.nome, v.aceitaTambem]).filter((n): n is string => Boolean(n)),
+  );
+
+  const parece = /supa|^next_public_|service_role|resend|remetente|site_url/i;
+
+  return Object.keys(process.env)
+    .filter((nome) => parece.test(nome) && !esperados.has(nome))
+    .sort();
+}
+
 export function ambienteCompleto(): boolean {
   return faltandoNoAmbiente().length === 0;
 }

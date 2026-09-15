@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Marca } from "@/components/marca/Marca";
 import { Cartao, Rotulo } from "@/components/ui/Cartao";
-import { conferirAmbiente, ambienteCompleto } from "@/lib/ambiente";
+import { conferirAmbiente, ambienteCompleto, nomesParecidos } from "@/lib/ambiente";
 import { criarClienteServico } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +21,7 @@ export const metadata = { title: "Diagnóstico · Escape Químico" };
 export default async function PaginaDiagnostico() {
   const variaveis = conferirAmbiente();
   const completo = ambienteCompleto();
+  const parecidos = nomesParecidos();
 
   let banco: { ok: boolean; detalhe: string } = {
     ok: false,
@@ -85,6 +86,23 @@ export default async function PaginaDiagnostico() {
           ))}
         </ul>
       </Cartao>
+
+      {parecidos.length > 0 ? (
+        <Cartao className="mt-4" destaque>
+          <Rotulo>Nomes parecidos encontrados no ambiente</Rotulo>
+          <p className="mt-2 text-mini text-tinta-2">
+            Estas variáveis existem aqui, mas com nome que o código não procura. Se alguma
+            deveria ser uma das de cima, é erro de digitação — compare caractere por caractere.
+          </p>
+          <ul className="mt-2 flex flex-col gap-1">
+            {parecidos.map((nome) => (
+              <li key={nome} className="font-dados text-mini break-all text-alerta">
+                {nome}
+              </li>
+            ))}
+          </ul>
+        </Cartao>
+      ) : null}
 
       <Cartao className="mt-4" destaque={completo && !banco.ok}>
         <Rotulo>Banco de dados</Rotulo>
