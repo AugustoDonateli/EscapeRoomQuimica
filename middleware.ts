@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { chavePublica, urlDoSupabase } from "@/lib/supabase/ambiente";
 
 /**
  * Renova a sessão a cada navegação e barra as áreas fechadas antes de a página
@@ -10,8 +11,8 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function middleware(request: NextRequest) {
   let resposta = NextResponse.next({ request });
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const chave = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const url = urlDoSupabase();
+  const chave = chavePublica();
   if (!url || !chave) return resposta;
 
   const supabase = createServerClient(url, chave, {

@@ -6,6 +6,7 @@ import { lerConfig } from "@/lib/dados";
 import { cadastrarEquipe, estadoDoAgendamento, jaEstaNaFila, type Integrante } from "@/lib/fila";
 import { guardarCodigo } from "@/lib/sessao-jogador";
 import { enviarConfirmacao } from "@/lib/email";
+import { enderecoDoSite } from "@/lib/supabase/ambiente";
 
 /**
  * Esta ação é pública: o jogador não faz login. Ações de servidor são
@@ -94,7 +95,7 @@ export async function cadastrar(
     equipe: nome,
     codigo: criado.codigo,
     nomeEvento: config.nome_evento,
-    enderecoDoSite: process.env.NEXT_PUBLIC_SITE_URL ?? "",
+    enderecoDoSite: enderecoDoSite() ?? "",
   }).catch(() => undefined);
 
   redirect(`/fila/${criado.codigo}?novo=1`);

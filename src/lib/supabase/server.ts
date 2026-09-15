@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { chaveDeServico, urlDoSupabase } from "@/lib/supabase/ambiente";
 
 /**
  * Cliente de servidor com a chave de serviço. Ignora as políticas do banco, e
@@ -9,12 +10,12 @@ import { createClient } from "@supabase/supabase-js";
  * que a validação aconteça no servidor e não no celular de quem está jogando.
  */
 export function criarClienteServico() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const chave = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = urlDoSupabase();
+  const chave = chaveDeServico();
 
   if (!url || !chave) {
     throw new Error(
-      "Faltam NEXT_PUBLIC_SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY no ambiente do servidor.",
+      "Faltam SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY no ambiente do servidor. Abra /diagnostico.",
     );
   }
 

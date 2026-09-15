@@ -3,6 +3,7 @@ import { exigirPapel } from "@/lib/auth";
 import { listarEstacoes, listarPerguntas } from "@/lib/dados";
 import { Marca } from "@/components/marca/Marca";
 import { Rotulo } from "@/components/ui/Cartao";
+import { enderecoDoSite } from "@/lib/supabase/ambiente";
 
 export const metadata = { title: "QRs para imprimir · Escape Químico" };
 
@@ -20,7 +21,7 @@ export default async function PaginaQRCodes() {
 
   const [estacoes, perguntas] = await Promise.all([listarEstacoes(), listarPerguntas()]);
 
-  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/+$/, "");
+  const base = (enderecoDoSite() ?? "").replace(/\/+$/, "");
   const paraImprimir = estacoes.filter((e) => e.ativa && e.tem_pergunta);
 
   const cartazes = await Promise.all(
@@ -48,7 +49,7 @@ export default async function PaginaQRCodes() {
 
         {!base ? (
           <p className="mt-5 rounded-base bg-alerta-suave px-4 py-3 text-mini text-alerta">
-            <strong>Falta o endereço do site.</strong> Defina <code>NEXT_PUBLIC_SITE_URL</code> no
+            <strong>Falta o endereço do site.</strong> Defina <code>SITE_URL</code> no
             ambiente depois de publicar na Vercel. Sem isso os QRs abaixo apontam para um endereço
             que não existe — dá para ver o formato da folha, mas não dá para imprimir e colar.
           </p>

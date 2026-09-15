@@ -72,6 +72,11 @@ export default async function PaginaDiagnostico() {
               <span className="min-w-0 flex-1">
                 <span className="block font-dados text-mini break-all">{v.nome}</span>
                 <span className="block text-mini text-tinta-2">{v.paraQue}</span>
+                {v.aceitaTambem ? (
+                  <span className="block font-dados text-micro text-tinta-3 break-all">
+                    ou {v.aceitaTambem}
+                  </span>
+                ) : null}
               </span>
               <span className="shrink-0 font-dados text-micro tracking-[0.1em] text-tinta-3 uppercase">
                 {v.presente ? "ok" : v.obrigatoria ? "falta" : "opcional"}
@@ -104,8 +109,17 @@ export default async function PaginaDiagnostico() {
             <li>
               Os valores ficam no painel do Supabase, em{" "}
               <strong className="text-tinta">Settings → API</strong>. A chave de serviço é a que
-              costuma ser esquecida — ela não tem o prefixo <code>NEXT_PUBLIC_</code> de propósito,
-              porque nunca pode ir para o navegador.
+              costuma ser esquecida.
+            </li>
+            <li>
+              Variável adicionada <strong className="text-tinta">depois</strong> de uma publicação
+              não entra nela: a Vercel injeta as variáveis no momento do deploy. Se a variável
+              existe no painel e aqui aparece “falta”, é quase sempre isso — falta o{" "}
+              <strong className="text-tinta">Redeploy</strong>.
+            </li>
+            <li>
+              Os dois nomes funcionam. Os sem <code>NEXT_PUBLIC_</code> são os preferidos porque
+              esse prefixo significa “pode ir para o navegador”, e aqui nenhuma delas vai.
             </li>
             <li>
               Marque o ambiente <strong className="text-tinta">Production</strong>.

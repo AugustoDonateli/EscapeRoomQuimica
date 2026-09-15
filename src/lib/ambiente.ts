@@ -1,9 +1,11 @@
+import { chaveDeServico, chavePublica, enderecoDoSite, urlDoSupabase } from "@/lib/supabase/ambiente";
+
 /**
  * Conferência do ambiente.
  *
  * Existe porque a primeira publicação na Vercel mostrou "a server error
  * occurred" e nada mais: sem uma das variáveis, o cliente do Supabase lança
- * exceção na renderização da primeira tela, e a pessoa fica sem saber o que
+ * exceção na renderização da primeira tela e a pessoa fica sem saber o que
  * faltou. Falha de configuração tem que dizer o que falta.
  *
  * Só reporta NOME de variável, nunca valor.
@@ -11,6 +13,7 @@
 
 export type Variavel = {
   nome: string;
+  aceitaTambem?: string;
   presente: boolean;
   obrigatoria: boolean;
   paraQue: string;
@@ -19,26 +22,29 @@ export type Variavel = {
 export function conferirAmbiente(): Variavel[] {
   return [
     {
-      nome: "NEXT_PUBLIC_SUPABASE_URL",
-      presente: Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL),
+      nome: "SUPABASE_URL",
+      aceitaTambem: "NEXT_PUBLIC_SUPABASE_URL",
+      presente: Boolean(urlDoSupabase()),
       obrigatoria: true,
       paraQue: "Endereço do projeto Supabase.",
     },
     {
-      nome: "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-      presente: Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
+      nome: "SUPABASE_ANON_KEY",
+      aceitaTambem: "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      presente: Boolean(chavePublica()),
       obrigatoria: true,
-      paraQue: "Chave pública, usada no navegador e no login.",
+      paraQue: "Chave pública, usada no login da equipe organizadora.",
     },
     {
       nome: "SUPABASE_SERVICE_ROLE_KEY",
-      presente: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+      presente: Boolean(chaveDeServico()),
       obrigatoria: true,
-      paraQue: "Chave de serviço, só no servidor. É a que costuma ser esquecida.",
+      paraQue: "Chave de serviço. É a única que realmente não pode vazar.",
     },
     {
-      nome: "NEXT_PUBLIC_SITE_URL",
-      presente: Boolean(process.env.NEXT_PUBLIC_SITE_URL),
+      nome: "SITE_URL",
+      aceitaTambem: "NEXT_PUBLIC_SITE_URL",
+      presente: Boolean(enderecoDoSite()),
       obrigatoria: false,
       paraQue: "Endereço público do site. É o que vai dentro dos QRs impressos.",
     },

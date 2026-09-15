@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { chavePublica, urlDoSupabase } from "@/lib/supabase/ambiente";
 
 /**
  * Cliente de servidor amarrado à sessão de quem está navegando. Usa a chave
@@ -8,13 +9,11 @@ import { cookies } from "next/headers";
  * sem passar pela chave de serviço, que ignora todas as políticas.
  */
 export async function criarClienteSessao() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const chave = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const url = urlDoSupabase();
+  const chave = chavePublica();
 
   if (!url || !chave) {
-    throw new Error(
-      "Faltam NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY. Copie .env.example para .env.local.",
-    );
+    throw new Error("Faltam SUPABASE_URL e SUPABASE_ANON_KEY. Abra /diagnostico.");
   }
 
   const cookieStore = await cookies();

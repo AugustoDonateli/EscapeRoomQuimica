@@ -112,10 +112,19 @@ No código isso é a classe `sala`, que troca as variáveis de cor de tudo que e
 ## Quando a publicação não abre
 
 Abra **`/diagnostico`**. Ela funciona sem login e sem banco de propósito, e diz quais
-variáveis de ambiente estão faltando e se o banco responde. O caso mais comum é
-`SUPABASE_SERVICE_ROLE_KEY` esquecida (ela não tem o prefixo `NEXT_PUBLIC_`, então passa
-batido) ou variável criada só no ambiente de Preview, sem marcar Production — e variável
-nova exige **Redeploy**, não entra numa publicação que já existe.
+variáveis de ambiente estão faltando e se o banco responde.
+
+Se a variável existe no painel da Vercel e o diagnóstico diz que falta, a causa é quase
+sempre uma destas três, nessa ordem:
+
+1. **Falta o Redeploy.** A Vercel injeta as variáveis no momento do deploy. Variável
+   adicionada depois não entra na publicação que já está no ar.
+2. **Ambiente errado.** Se não marcou *Production*, o endereço público não vê.
+3. **Nome diferente.** Tem que bater caractere por caractere. O diagnóstico mostra os nomes
+   exatos que o código procura.
+
+Os nomes com e sem `NEXT_PUBLIC_` funcionam igual — os sem prefixo são os preferidos porque
+esse prefixo significa "pode ir para o navegador", e nenhuma credencial daqui vai.
 
 ## Deploy
 
