@@ -11,8 +11,11 @@
 -- padrão que a equipe das perguntas precisa seguir.
 -- ============================================================================
 
-insert into event_config (id, nome_evento, duracao_sessao_min, reset_min)
-values (true, 'Escape Químico', 20, 5)
+-- O horário entra explícito: a primeira versão deste seed omitia abre_em e
+-- fecha_em, as duas colunas nasciam nulas, e a página inicial estourava por
+-- causa disso na primeira publicação real.
+insert into event_config (id, nome_evento, duracao_sessao_min, reset_min, abre_em, fecha_em)
+values (true, 'Escape Químico', 20, 5, '08:00', '14:00')
 on conflict (id) do nothing;
 
 -- Estações -------------------------------------------------------------------

@@ -19,7 +19,11 @@ const NA_FILA: StatusFila[] = ["aguardando", "chamada", "em_jogo"];
 
 export type EstadoAgendamento =
   | { aberto: true; lote: Lote; vagas: number; capacidade: number }
-  | { aberto: false; motivo: "antes_do_dia" | "fora_do_horario" | "lote_cheio" | "dia_cheio"; detalhe: string };
+  | {
+      aberto: false;
+      motivo: "sem_horario" | "antes_do_dia" | "fora_do_horario" | "lote_cheio" | "dia_cheio";
+      detalhe: string;
+    };
 
 /**
  * O agendamento acontece só no dia da feira, na hora. Esta função é o portão:
@@ -29,6 +33,18 @@ export type EstadoAgendamento =
 export async function estadoDoAgendamento(config?: Config): Promise<EstadoAgendamento> {
   const c = config ?? (await lerConfig());
   const agora = new Date();
+
+  // Sem horário de funcionamento não existe capacidade, e sem capacidade a fila
+  // não pode abrir. Isto tem estado próprio porque o motivo é outro: não é que
+  // encheu, é que ninguém preencheu ainda — e dizer "encheu" mandaria a pessoa
+  // esperar por uma vaga que não vai aparecer sozinha.
+  if (!c.abre_em || !c.fecha_em) {
+    return {
+      aberto: false,
+      motivo: "sem_horario",
+      detalhe: "O horário de funcionamento da feira ainda não foi definido no painel.",
+    };
+  }
 
   // Sem data definida a plataforma segue aberta de propósito: é o que permite
   // testar tudo antes de a feira ter data marcada.

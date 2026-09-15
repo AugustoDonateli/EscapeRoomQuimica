@@ -73,6 +73,12 @@ export default async function Totem() {
               <p className="mt-3 text-mini text-tinta-2">
                 Passe aqui de novo no horário do próximo lote — o totem volta a abrir sozinho.
               </p>
+            ) : estado.motivo === "sem_horario" ? (
+              <p className="mt-3 text-mini text-tinta-2">
+                Quem organiza precisa preencher a hora de abrir e de fechar em{" "}
+                <span className="font-dados">/admin</span>. É o que define quantas equipes
+                cabem no dia.
+              </p>
             ) : null}
           </Cartao>
         )}

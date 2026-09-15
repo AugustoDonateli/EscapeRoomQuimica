@@ -25,8 +25,18 @@ export function horaLocal(agora: Date = new Date()): string {
   }).format(agora);
 }
 
-/** Minutos desde a meia-noite, para comparar horários sem virar data. */
-export function minutosDoDia(horario: string): number | null {
+/**
+ * Minutos desde a meia-noite, para comparar horários sem virar data.
+ *
+ * Aceita nulo porque coluna `time` do Postgres é nulável e pode estar vazia —
+ * foi assim que a primeira publicação quebrou: `abre_em` e `fecha_em` nunca
+ * foram preenchidos, o tipo em TypeScript dizia que eram texto obrigatório, e
+ * `.trim()` num nulo derrubou a página inicial. Quem decide o que fazer sem
+ * horário é quem chama, não esta função.
+ */
+export function minutosDoDia(horario: string | null | undefined): number | null {
+  if (typeof horario !== "string") return null;
+
   const m = /^([01]\d|2[0-3]):([0-5]\d)/.exec(horario.trim());
   return m ? Number(m[1]) * 60 + Number(m[2]) : null;
 }

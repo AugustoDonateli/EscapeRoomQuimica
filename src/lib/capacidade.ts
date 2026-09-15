@@ -25,8 +25,8 @@ export type Capacidade = {
 };
 
 export function calcularCapacidade(entrada: {
-  abre_em: string;
-  fecha_em: string;
+  abre_em: string | null;
+  fecha_em: string | null;
   duracao_sessao_min: number;
   reset_min: number;
   equipe_max: number;
@@ -59,9 +59,9 @@ export function calcularCapacidade(entrada: {
  * o da tarde vende o resto.
  */
 export function capacidadePorLote(entrada: {
-  abre_em: string;
-  fecha_em: string;
-  lote_tarde_abre_em: string;
+  abre_em: string | null;
+  fecha_em: string | null;
+  lote_tarde_abre_em: string | null;
   duracao_sessao_min: number;
   reset_min: number;
   equipe_max: number;

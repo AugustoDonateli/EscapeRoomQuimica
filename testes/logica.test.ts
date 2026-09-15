@@ -140,3 +140,36 @@ test("capacidade: aceita o hh:mm:ss que vem da coluna time do Postgres", () => {
   assert.equal(lotes.manha, 7);
   assert.equal(lotes.tarde, 7);
 });
+
+test("capacidade: horário ausente no banco não derruba a conta", () => {
+  // Regressão de um bug que só apareceu na primeira publicação real: as colunas
+  // abre_em e fecha_em são nuláveis e ficaram vazias, o tipo em TypeScript
+  // dizia que eram texto obrigatório, e .trim() num nulo derrubou a página
+  // inicial. O dublê local sempre mandava valor — por isso passou batido.
+  for (const ausente of [null, undefined]) {
+    const c = calcularCapacidade({
+      ...FEIRA,
+      abre_em: ausente as unknown as string,
+      fecha_em: ausente as unknown as string,
+    });
+    assert.equal(c.sessoes, 0);
+    assert.equal(c.jogadores, 0);
+    assert.equal(c.minutosDeFeira, 0);
+
+    const l = capacidadePorLote({
+      ...FEIRA,
+      abre_em: ausente as unknown as string,
+      fecha_em: ausente as unknown as string,
+      lote_tarde_abre_em: ausente as unknown as string,
+    });
+    assert.equal(l.total, 0);
+    assert.equal(l.manha, 0);
+    assert.equal(l.tarde, 0);
+  }
+});
+
+test("minutos do dia: nulo e indefinido voltam nulo em vez de estourar", () => {
+  assert.equal(minutosDoDia(null), null);
+  assert.equal(minutosDoDia(undefined), null);
+  assert.equal(minutosDoDia(""), null);
+});

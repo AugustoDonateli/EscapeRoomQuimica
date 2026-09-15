@@ -9,8 +9,12 @@ import { criarClienteServico } from "@/lib/supabase/server";
 export type Config = {
   nome_evento: string;
   data_evento: string | null;
-  abre_em: string;
-  fecha_em: string;
+  // Nuláveis no banco e sem valor padrão: ficam vazias até a organização da
+  // feira definir o horário. O tipo diz a verdade sobre isso de propósito —
+  // quando dizia que eram obrigatórias, o compilador não pôde avisar que a
+  // página inicial ia estourar com o banco recém-criado.
+  abre_em: string | null;
+  fecha_em: string | null;
   duracao_sessao_min: number;
   reset_min: number;
   lote_manha_abre_em: string;
