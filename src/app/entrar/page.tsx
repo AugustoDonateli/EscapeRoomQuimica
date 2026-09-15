@@ -1,5 +1,5 @@
 import { Marca } from "@/components/marca/Marca";
-import { Cartao } from "@/components/ui/Cartao";
+import { Cartao, Rotulo } from "@/components/ui/Cartao";
 import { FormularioEntrar } from "./formulario";
 import { faltandoNoAmbiente } from "@/lib/ambiente";
 import { FaltaConfigurar } from "@/components/FaltaConfigurar";
@@ -28,6 +28,19 @@ export default async function Entrar({
       <p className="mt-2 text-mini text-tinta-2">
         Jogador não entra por aqui — a tela de vocês abre pelo QR do totem, sem senha.
       </p>
+
+      {/* Ninguém cria conta sozinho, e a tela precisa dizer isso: sem esta
+          linha, quem chega aqui procura um botão de "criar conta" que não
+          existe e conclui que o site está quebrado. Aconteceu. */}
+      <Cartao className="mt-5">
+        <Rotulo>Não existe cadastro aqui</Rotulo>
+        <p className="mt-2 text-mini text-tinta-2">
+          As contas da equipe organizadora são criadas por quem administra o projeto, uma para
+          cada papel: administração, instrutor e autor de perguntas. Se você deveria ter acesso e
+          não tem, peça a conta a quem cuida da plataforma — não tem botão para se cadastrar, e
+          isso é de propósito.
+        </p>
+      </Cartao>
 
       {erro === "sem-permissao" ? (
         <p
