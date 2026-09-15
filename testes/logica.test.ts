@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "vitest";
 import { calcularCapacidade, capacidadePorLote } from "@/lib/capacidade";
 import { gerarCodigo, normalizarCodigo } from "@/lib/codigo";
+import { mensagemDeFalhaNoLogin } from "@/lib/login";
 import { hojeLocal, horaLocal, minutosDoDia } from "@/lib/tempo";
 
 const FEIRA = {
@@ -172,4 +173,25 @@ test("minutos do dia: nulo e indefinido voltam nulo em vez de estourar", () => {
   assert.equal(minutosDoDia(null), null);
   assert.equal(minutosDoDia(undefined), null);
   assert.equal(minutosDoDia(""), null);
+});
+
+test("login: falha do serviço não é apresentada como senha errada", () => {
+  // Regressão da primeira publicação real: as contas foram criadas por SQL na
+  // mão e ficaram com NULL em confirmation_token, recovery_token,
+  // email_change_token_new e email_change. O GoTrue lê essas colunas como
+  // texto, quebrou no 500, e a tela dizia "e-mail ou senha não conferem" —
+  // mandando procurar no lugar errado uma senha que estava certa.
+  const servico = mensagemDeFalhaNoLogin(500);
+  assert.match(servico, /serviço de login falhou/);
+  assert.equal(mensagemDeFalhaNoLogin(503), servico);
+  assert.equal(mensagemDeFalhaNoLogin(undefined), servico);
+  assert.equal(mensagemDeFalhaNoLogin(null), servico);
+  assert.equal(mensagemDeFalhaNoLogin(0), servico);
+
+  // Credencial errada continua genérica: não conta quais e-mails existem.
+  assert.equal(mensagemDeFalhaNoLogin(400), "E-mail ou senha não conferem.");
+  assert.equal(mensagemDeFalhaNoLogin(401), "E-mail ou senha não conferem.");
+
+  // Bloqueio por tentativas tem recado próprio: esperar resolve.
+  assert.match(mensagemDeFalhaNoLogin(429), /Espere um minuto/);
 });
