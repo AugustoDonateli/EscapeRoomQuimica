@@ -1,39 +1,56 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Escape Químico — sistema visual (etapa 2 do plano)
+   Escape Químico — sistema visual
+
+   DIREÇÃO: caderno de laboratório sob pressão. Papel quadriculado, tinta quase
+   preta, estrutura à vista. A referência não é site de produto — é a página de
+   anotação de bancada, com índice na margem, número grande e fita de risco na
+   porta. Está escrito em docs/visual.md, com a lista fechada de recursos
+   permitidos; o que não está lá não entra.
 
    Duas paletas, escolhidas por CONTEXTO FÍSICO e não pelo tema do celular:
 
    :root   FORA DA SALA — totem, cadastro, fila, placar. A pessoa está no sol
-           da feira, então o fundo é claro. Os acentos vêm da paleta
-           "Laboratório noturno" escurecidos até terem contraste real no claro.
+           da feira, então o fundo é papel claro.
 
    .sala   DENTRO DA SALA — pergunta da estação e painel do instrutor em
-           sessão. A pessoa está no escuro com pressa, então o fundo é grafite
-           e os acentos voltam ao brilho original.
+           sessão. A pessoa está no escuro com pressa, então o fundo é grafite.
 
    Por isso NÃO existe prefers-color-scheme aqui: quem decide a cor é o lugar
    onde a pessoa está, não a configuração do aparelho dela.
+
+   Todo par de cor usado em texto foi medido, não estimado: 36 pares passando
+   pelo mínimo da WCAG 2.2 (4.5:1 texto, 3:1 borda de campo, 7:1 corpo).
 --------------------------------------------------------------------------- */
 
 :root {
-  --cor-fundo: #f2f5f4;
-  --cor-superficie: #ffffff;
-  --cor-superficie-2: #e7edeb;
-  --cor-tinta: #101614;
-  --cor-tinta-2: #4e5b58;
-  --cor-tinta-3: #637070;
-  --cor-linha: #d5dedb;
-  --cor-linha-2: #becac7;
+  --cor-fundo: #f1efe8;
+  --cor-superficie: #fbfaf6;
+  --cor-superficie-2: #e5e2d8;
+  --cor-tinta: #15181a;
+  --cor-tinta-2: #4f544e;
+  --cor-tinta-3: #65695f;
+  --cor-linha: #dbd7ca;
+  --cor-linha-2: #8d8877;
   --cor-acento: #0d7263;
-  --cor-acento-suave: #dff0ec;
+  --cor-acento-suave: #dceee9;
   --cor-acento-2: #2b5fcc;
-  --cor-acento-2-suave: #e3eaf9;
-  --cor-alerta: #8f5400;
-  --cor-alerta-suave: #f8eeda;
+  --cor-acento-2-suave: #e2e8f8;
+  --cor-alerta: #8a5100;
+  --cor-alerta-suave: #f6ecd6;
   --cor-perigo: #a01f35;
-  --cor-perigo-suave: #fae7ea;
+  --cor-perigo-suave: #f9e6e8;
+
+  /* Textura do papel: a linha do quadriculado e o grão. */
+  --cor-grade: #15181a12;
+  --grao-opacidade: 0.5;
+
+  /* Sombra dura, deslocada, sem desfoque: estrutura à vista em vez de borda
+     de 1px em tudo. Borda em tudo é o que faz uma tela parecer lista de
+     caixas geradas. */
+  --sombra-dura: 3px 3px 0 0 var(--cor-linha-2);
+  --sombra-dura-forte: 4px 4px 0 0 var(--cor-tinta);
 
   --raio: 4px;
 
@@ -43,14 +60,14 @@
 }
 
 .sala {
-  --cor-fundo: #0c1211;
-  --cor-superficie: #131c1a;
-  --cor-superficie-2: #1b2624;
-  --cor-tinta: #dfe9e6;
-  --cor-tinta-2: #93a5a1;
-  --cor-tinta-3: #7a8b87;
-  --cor-linha: #1e2a28;
-  --cor-linha-2: #2b3936;
+  --cor-fundo: #0b100f;
+  --cor-superficie: #161f1d;
+  --cor-superficie-2: #1f2b28;
+  --cor-tinta: #e2ebe8;
+  --cor-tinta-2: #95a6a2;
+  --cor-tinta-3: #7c8d89;
+  --cor-linha: #1d2927;
+  --cor-linha-2: #5c6b67;
   --cor-acento: #3fd9c4;
   --cor-acento-suave: #0f2520;
   --cor-acento-2: #8fb8ff;
@@ -59,6 +76,12 @@
   --cor-alerta-suave: #241a0e;
   --cor-perigo: #ff7089;
   --cor-perigo-suave: #2a1319;
+
+  --cor-grade: #e2ebe80f;
+  --grao-opacidade: 0.35;
+
+  --sombra-dura: 3px 3px 0 0 var(--cor-linha-2);
+  --sombra-dura-forte: 4px 4px 0 0 var(--cor-linha-2);
 }
 
 @theme inline {
@@ -80,6 +103,9 @@
   --color-perigo-suave: var(--cor-perigo-suave);
 
   --radius-base: var(--raio);
+
+  --shadow-dura: var(--sombra-dura);
+  --shadow-dura-forte: var(--sombra-dura-forte);
 
   --font-display: var(--fonte-display);
   --font-corpo: var(--fonte-corpo);
@@ -113,6 +139,34 @@
     font-size: var(--text-base);
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
+    isolation: isolate;
+  }
+
+  /* O papel. Quadriculado de 24px e grão, os dois ATRÁS do conteúdo (z -1):
+     textura não pode encostar no contraste de texto de verdade. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: var(--cor-fundo);
+    background-image:
+      linear-gradient(to right, var(--cor-grade) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--cor-grade) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: center top;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: var(--grao-opacidade);
+    /* Grão gerado no próprio SVG: nenhum arquivo de imagem para baixar. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)' opacity='0.09'/%3E%3C/svg%3E");
   }
 
   /* O dedo erra e o teclado precisa funcionar: foco sempre visível. */
@@ -124,6 +178,58 @@
   /* Números que se comparam ficam alinhados na coluna. */
   .tabular {
     font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* Dentro da sala o papel também existe.
+     O quadriculado do :root é desenhado em body::before, que fica ATRÁS de
+     tudo; um container .sala pinta o próprio fundo por cima e apagaria a
+     textura. Então a grade é redesenhada aqui, no mesmo passo de 24px, para
+     que a identidade não desapareça justamente nas telas do jogo. */
+  .sala {
+    background-image:
+      linear-gradient(to right, var(--cor-grade) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--cor-grade) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: center top;
+  }
+
+  /* Fita de risco da porta: o único lugar em que a plataforma grita. Serve
+     para o que está FECHADO ou INTERROMPIDO, nunca para decorar. */
+  .fita-risco {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--cor-alerta) 0 9px,
+      transparent 9px 18px
+    );
+  }
+
+  .fita-risco-perigo {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--cor-perigo) 0 9px,
+      transparent 9px 18px
+    );
+  }
+
+  /* Régua que sai pela borda da tela. Quebra a coluna centrada sem precisar
+     de imagem: a linha começa no texto e não termina. */
+  .regua-ao-infinito {
+    background-image: linear-gradient(to right, var(--cor-linha-2) 0 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 1px;
+    background-position: left center;
+  }
+
+  /* Título de display do tamanho editorial: grande, apertado, com o número
+     do parágrafo pendurado na margem como caderno numerado. */
+  .titulo-editorial {
+    font-family: var(--fonte-display);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    text-wrap: balance;
   }
 }
 
@@ -146,6 +252,12 @@
 --------------------------------------------------------------------------- */
 @media print {
   .esconder-na-impressao {
+    display: none !important;
+  }
+
+  /* Papel de verdade não precisa de papel desenhado. */
+  body::before,
+  body::after {
     display: none !important;
   }
 

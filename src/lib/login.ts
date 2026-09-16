@@ -16,7 +16,7 @@ export function mensagemDeFalhaNoLogin(status?: number | null): string {
   }
 
   if (typeof status !== "number" || status <= 0 || status >= 500) {
-    return "O serviço de login falhou — não é a sua senha. Veja /diagnostico e os registros do Supabase.";
+    return "O serviço de login falhou — não é a sua senha. Tente de novo em um minuto.";
   }
 
   return "E-mail ou senha não conferem.";

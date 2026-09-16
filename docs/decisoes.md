@@ -258,7 +258,7 @@ Decidido no quiz visual de 11/09/2026:
 | Paleta | Laboratório noturno (grafite esverdeado, ciano frio, azul) |
 | Tipografia | Bricolage Grotesque (display) + IBM Plex Sans (texto) + IBM Plex Mono (dados) |
 | Cantos | Levemente arredondado — 4 px |
-| Fundo | Liso, sem textura |
+| Fundo | ~~Liso, sem textura~~ → **papel quadriculado com grão** (revisto em 16/09, ver abaixo) |
 | Voz do texto | Direto e humano — *"Sua vez está chegando — fica por aqui!"* |
 | Marca | Número atômico (casinha da tabela periódica) |
 | Cronômetro | Proveta esvaziando (barra de líquido que baixa) |
@@ -277,8 +277,24 @@ sobre fundo claro. Proposta de resolução:
 
 Ou seja: o híbrido por contexto, chegando pelo caminho da paleta em vez do caminho do tema.
 
-### Consequência de "fundo liso"
+### Revisão de 16/09/2026: o fundo deixou de ser liso
 
-Sem textura de fundo, o peso da identidade passa a ser carregado por quatro coisas:
-a marca de número atômico, a proveta do cronômetro, o acento frio e a Bricolage Grotesque.
-São esses quatro detalhes que vão separar o site de um template — precisam ser bem feitos.
+A aposta do "fundo liso" era que quatro detalhes — marca de número atômico, proveta,
+acento frio e Bricolage Grotesque — segurariam a identidade sozinhos. Não seguraram, por
+dois motivos:
+
+1. **Um dos quatro não existia.** A Bricolage nunca chegou à tela: as variáveis de fonte
+   estavam declaradas no `<body>` e `globals.css` monta as famílias em `:root`, então
+   `font-family` caía para a fonte do navegador. Sete etapas de site renderizadas em Arial,
+   sem nenhum erro em lugar nenhum.
+2. **Três detalhes num fundo liso é pouco.** Sem textura e sem hierarquia de profundidade, o
+   resultado é a média: cartão com borda de 1px, tudo com o mesmo peso, coluna centrada.
+   Foi exatamente essa a crítica recebida — *"parece completamente feito de inteligência
+   artificial"*.
+
+O fundo agora é papel quadriculado de 24 px com grão, os dois atrás do conteúdo. A direção
+inteira, com a lista fechada de recursos permitidos, está em **`docs/visual.md`**.
+
+**Esta decisão contraria uma escolha feita no quiz.** Tirar a textura é um bloco de CSS em
+`globals.css` (`body::before`, `body::after` e a grade do `.sala`): se a escolha original
+valer mais que o efeito, ela sai em uma edição.

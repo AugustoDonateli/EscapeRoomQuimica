@@ -42,9 +42,6 @@ npm run dev                  # http://localhost:3000
 
 - `/placar` — o placar ao vivo para a TV ou projetor da feira
 
-- `/estilo` — **catálogo do sistema visual**: as duas paletas, a escala tipográfica, a marca,
-  os componentes e o cronômetro em proveta. É onde o visual se discute antes de virar tela.
-
 **Fechado, com login** (`/entrar`)
 
 - `/admin` — configuração do evento, com a **capacidade do dia recalculada na tela** enquanto
@@ -111,10 +108,12 @@ No código isso é a classe `sala`, que troca as variáveis de cor de tudo que e
 
 ## Quando a publicação não abre
 
-Abra **`/diagnostico`**. Ela funciona sem login e sem banco de propósito, e diz quais
-variáveis de ambiente estão faltando e se o banco responde.
+Qualquer tela mostra **"Falta configurar a publicação"** em vez de erro genérico, e lista
+os nomes das variáveis que não chegaram ao servidor — junto com os nomes *parecidos* que
+existem no ambiente, porque um caractere trocado é a causa mais comum e não se vê de bater
+o olho no painel.
 
-Se a variável existe no painel da Vercel e o diagnóstico diz que falta, a causa é quase
+Se a variável existe no painel da Vercel e essa tela diz que falta, a causa é quase
 sempre uma destas três, nessa ordem:
 
 1. **Falta o Redeploy.** A Vercel injeta as variáveis no momento do deploy. Variável

@@ -44,7 +44,7 @@ export function Marca({
       </span>
       {comNome ? (
         <span
-          className={`font-display font-extrabold tracking-tight ${
+          className={`font-display font-extrabold tracking-tight whitespace-nowrap ${
             tamanho === "cartaz" ? "text-[40px]" : tamanho === "tela" ? "text-titulo" : "text-mini"
           }`}
         >

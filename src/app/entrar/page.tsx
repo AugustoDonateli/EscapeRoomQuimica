@@ -1,5 +1,5 @@
 import { Marca } from "@/components/marca/Marca";
-import { Cartao, Rotulo } from "@/components/ui/Cartao";
+import { Cartao } from "@/components/ui/Cartao";
 import { FormularioEntrar } from "./formulario";
 import { faltandoNoAmbiente } from "@/lib/ambiente";
 import { FaltaConfigurar } from "@/components/FaltaConfigurar";
@@ -22,36 +22,38 @@ export default async function Entrar({
     <main className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-5 py-10">
       <Marca tamanho="tela" comNome />
 
-      <h1 className="mt-8 font-display text-titulo font-bold tracking-tight">
-        Área da equipe organizadora
+      <p className="mt-8 font-dados text-micro tracking-[0.22em] text-tinta-3 uppercase">
+        acesso restrito
+      </p>
+      <h1 className="titulo-editorial mt-2 text-[clamp(1.9rem,9vw,2.5rem)] uppercase">
+        Entrada da
+        <br />
+        organização
       </h1>
-      <p className="mt-2 text-mini text-tinta-2">
-        Jogador não entra por aqui — a tela de vocês abre pelo QR do totem, sem senha.
+
+      <p className="mt-4 text-mini text-tinta-2">
+        Quem joga não entra por aqui: a tela da equipe abre pelo QR da entrada, sem senha.
       </p>
 
-      {/* Ninguém cria conta sozinho, e a tela precisa dizer isso: sem esta
-          linha, quem chega aqui procura um botão de "criar conta" que não
-          existe e conclui que o site está quebrado. Aconteceu. */}
-      <Cartao className="mt-5">
-        <Rotulo>Não existe cadastro aqui</Rotulo>
-        <p className="mt-2 text-mini text-tinta-2">
-          As contas da equipe organizadora são criadas por quem administra o projeto, uma para
-          cada papel: administração, instrutor e autor de perguntas. Se você deveria ter acesso e
-          não tem, peça a conta a quem cuida da plataforma — não tem botão para se cadastrar, e
-          isso é de propósito.
-        </p>
-      </Cartao>
+      {/* Sem esta linha, quem chega aqui procura um botão de "criar conta" que
+          não existe e conclui que o site está quebrado. Aconteceu de verdade. */}
+      <p className="mt-2 text-mini text-tinta-2">
+        As contas de instrutor, administração e autoria são criadas pela administração da
+        plataforma. Esta tela só faz login.
+      </p>
 
       {erro === "sem-permissao" ? (
         <p
           role="alert"
           className="mt-5 rounded-base bg-alerta-suave px-3 py-2 text-mini text-alerta"
         >
-          Sua conta existe, mas não tem permissão para essa parte do painel.
+          Essa conta existe, mas não alcança essa parte do painel.
         </p>
       ) : null}
 
-      <Cartao className="mt-5">
+      {/* Cartão plano de propósito: o botão primário já tem sombra dura, e duas
+          empilhadas viram sujeira na borda em vez de profundidade. */}
+      <Cartao className="mt-6">
         <FormularioEntrar de={de} />
       </Cartao>
     </main>

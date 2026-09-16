@@ -38,7 +38,7 @@ export default async function PaginaFila({
         <Link href="/">
           <Marca tamanho="icone" />
         </Link>
-        <Cartao className="mt-8">
+        <Cartao tom="fechado" className="mt-8">
           <Rotulo>Código não encontrado</Rotulo>
           <p className="mt-2 text-base">
             Não achamos nenhuma equipe com esse código. Confira as letras — o código não tem a
@@ -80,14 +80,15 @@ export default async function PaginaFila({
         </p>
       ) : null}
 
-      <p className="mt-6 font-display text-titulo leading-tight font-extrabold tracking-tight">
-        {equipe.nome}
+      <p className="mt-7 font-dados text-micro tracking-[0.22em] text-tinta-3 uppercase">
+        02 &mdash; fila
       </p>
+      <h1 className="titulo-editorial mt-2 text-[clamp(1.75rem,8vw,2.25rem)]">{equipe.nome}</h1>
 
       {chamada ? (
         /* O momento que importa. Nada de sutileza: é a única tela da
            plataforma que grita. */
-        <div className="mt-5 rounded-base bg-acento p-5 text-fundo">
+        <div className="mt-5 rounded-base bg-acento p-5 text-fundo shadow-dura-forte">
           <p className="font-dados text-micro tracking-[0.16em] uppercase opacity-80">
             É a vez de vocês
           </p>
@@ -101,18 +102,16 @@ export default async function PaginaFila({
         </div>
       ) : entrada.status === "aguardando" ? (
         <>
-          <div className="mt-5 flex items-baseline gap-3">
-            <span className="tabular font-display text-enorme leading-[0.82] font-extrabold text-acento">
+          <div className="mt-6">
+            <Rotulo>
+              posição na fila do lote da {entrada.lote === "manha" ? "manhã" : "tarde"}
+            </Rotulo>
+            <p className="tabular titulo-editorial mt-1 text-[clamp(4.5rem,26vw,7rem)] text-acento">
               {quantasNaFrente === 0 ? "1ª" : `${quantasNaFrente + 1}ª`}
-            </span>
-            <span className="text-mini leading-tight text-tinta-2">
-              na fila
-              <br />
-              do lote da {entrada.lote === "manha" ? "manhã" : "tarde"}
-            </span>
+            </p>
           </div>
 
-          <div className="mt-5 rounded-base border border-linha bg-superficie-2 px-4 py-3">
+          <Cartao tom="papel" className="mt-5">
             <Rotulo>Estimativa da sua vez</Rotulo>
             <p className="tabular mt-1 font-dados text-medio font-semibold">
               {estimativaDe && estimativaAte
@@ -127,7 +126,7 @@ export default async function PaginaFila({
                   : `Faltam ${quantasNaFrente} equipes na frente de vocês.`}{" "}
               A previsão se corrige sozinha conforme as sessões andam.
             </p>
-          </div>
+          </Cartao>
         </>
       ) : (
         <div className="mt-5">
@@ -165,12 +164,12 @@ export default async function PaginaFila({
         </div>
       ) : null}
 
-      <div className="mt-6">
+      <div className="mt-6 rounded-base border border-dashed border-linha-2 bg-superficie p-4">
         <Rotulo>Código da equipe</Rotulo>
         <p className="tabular mt-1 font-dados text-grande leading-none font-semibold tracking-[0.08em]">
           {equipe.codigo_acesso}
         </p>
-        <p className="mt-1.5 text-mini text-tinta-2">
+        <p className="mt-2 text-mini text-tinta-2">
           Anote num papel. Se o celular morrer, é com ele que vocês voltam para esta tela.
         </p>
       </div>

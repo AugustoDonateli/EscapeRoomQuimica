@@ -100,7 +100,7 @@ export function FormularioConfig({ config }: { config: Config }) {
         <Campo id="corte_categoria" name="corte_categoria" etiqueta="Corte entre categorias" type="number" step="0.1" min={1} max={12} defaultValue={config.corte_categoria} ajuda="Média de ano da equipe abaixo disso entra como iniciante." required />
       </Grupo>
 
-      <Grupo titulo="Decisões em aberto" nota="Ficam como chave, para você mudar sem mexer em código.">
+      <Grupo titulo="Decisões em aberto" nota="Ficam como chave: a organização muda aqui, sem ninguém mexer no código.">
         <Interruptor id="usar_categorias" name="usar_categorias" etiqueta="Ranquear em duas categorias" ajuda="Iniciante e avançado, pela média de ano da equipe." defaultChecked={config.usar_categorias} />
         <Interruptor id="nota_individual_no_premio" name="nota_individual_no_premio" etiqueta="Nota individual conta no prêmio da equipe" ajuda="Desligado, ela vira só reconhecimento — o destaque da sessão." defaultChecked={config.nota_individual_no_premio} />
         <Interruptor id="ordem_livre" name="ordem_livre" etiqueta="A equipe pode fazer as estações em qualquer ordem" ajuda="Desligado, só a estação seguinte à última concluída abre — é o que impede ler o QR da última e pular o jogo." defaultChecked={config.ordem_livre} />

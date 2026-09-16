@@ -32,7 +32,7 @@ export default async function PaginaPlacarAdmin() {
           </h1>
           <p className="mt-2 max-w-[64ch] text-mini text-tinta-2">
             Cada linha mostra de onde veio cada ponto. É o que transforma o resultado em algo
-            discutível em vez de opinião — e o que você abre se alguém contestar o prêmio.
+            discutível em vez de opinião — e é esta tela que se abre se alguém contestar o prêmio.
           </p>
         </div>
 

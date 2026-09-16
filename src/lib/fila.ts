@@ -42,7 +42,9 @@ export async function estadoDoAgendamento(config?: Config): Promise<EstadoAgenda
     return {
       aberto: false,
       motivo: "sem_horario",
-      detalhe: "O horário de funcionamento da feira ainda não foi definido no painel.",
+      // Quem lê este texto é jogador, na entrada da sala. O recado acionável
+      // ("preencha a hora de abrir") aparece em /admin, para quem pode agir.
+      detalhe: "A sala ainda não abriu a fila de hoje.",
     };
   }
 

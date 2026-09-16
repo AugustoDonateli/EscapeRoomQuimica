@@ -15,7 +15,7 @@ export function criarClienteServico() {
 
   if (!url || !chave) {
     throw new Error(
-      "Faltam SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY no ambiente do servidor. Abra /diagnostico.",
+      "Faltam SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY no ambiente do servidor.",
     );
   }
 

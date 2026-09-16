@@ -13,7 +13,7 @@ export async function criarClienteSessao() {
   const chave = chavePublica();
 
   if (!url || !chave) {
-    throw new Error("Faltam SUPABASE_URL e SUPABASE_ANON_KEY. Abra /diagnostico.");
+    throw new Error("Faltam SUPABASE_URL e SUPABASE_ANON_KEY no ambiente do servidor.");
   }
 
   const cookieStore = await cookies();

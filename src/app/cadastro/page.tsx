@@ -18,13 +18,20 @@ export default async function PaginaCadastro() {
         <Marca tamanho="icone" />
       </Link>
 
-      <h1 className="mt-6 font-display text-titulo font-bold tracking-tight">
-        Agendar a sessão de vocês
+      <p className="mt-7 font-dados text-micro tracking-[0.22em] text-tinta-3 uppercase">
+        01 &mdash; cadastro
+      </p>
+      <h1 className="titulo-editorial mt-2 text-[clamp(1.9rem,9vw,2.5rem)] uppercase">
+        Quem entra
+        <br />
+        na sala
       </h1>
 
       {estado.aberto ? (
         <>
-          <p className="mt-2 text-mini text-tinta-2">
+          <p className="mt-4 text-mini text-tinta-2">
+            De {config.equipe_min} a {config.equipe_max} pessoas por equipe. Podem ser de anos
+            diferentes.{" "}
             {estado.vagas === 1 ? "Resta 1 vaga" : `Restam ${estado.vagas} vagas`} no lote da{" "}
             {estado.lote === "manha" ? "manhã" : "tarde"}.
           </p>
@@ -39,8 +46,8 @@ export default async function PaginaCadastro() {
           </div>
         </>
       ) : (
-        <Cartao className="mt-6">
-          <Rotulo>Agendamento fechado</Rotulo>
+        <Cartao tom="fechado" className="mt-6">
+          <Rotulo>A fila está fechada</Rotulo>
           <p className="mt-2 text-base">{estado.detalhe}</p>
           <Link href="/" className="mt-4 inline-block text-mini font-semibold text-acento underline">
             Voltar ao início

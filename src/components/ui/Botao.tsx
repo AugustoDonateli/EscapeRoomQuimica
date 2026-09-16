@@ -6,13 +6,20 @@ import type { ButtonHTMLAttributes } from "react";
  *   medio   — o padrão, com 48px de altura (alvo de toque mínimo)
  *   grande  — 64px, o botão do instrutor: ele está de pé, andando, olhando os
  *             jogadores e não a tela, e acerta com um polegar só.
+ *
+ * O primário tem sombra dura e afunda 2px quando pressionado. Não é enfeite:
+ * numa feira barulhenta, com o celular na mão e o dedo suado, o botão precisa
+ * responder de um jeito que se vê sem ler nada.
+ *
+ * A seta é a seta de reação química — o "→" de reagente para produto. É a
+ * marca das ações que levam a pessoa para a frente no fluxo.
  */
 
 type Variante = "primario" | "secundario" | "fantasma" | "perigo" | "alerta";
 type Tamanho = "pequeno" | "medio" | "grande";
 
 const VARIANTES: Record<Variante, string> = {
-  primario: "bg-acento text-fundo border-acento",
+  primario: "bg-acento text-fundo border-acento shadow-dura-forte active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
   secundario: "bg-superficie text-tinta border-linha-2 hover:border-acento",
   fantasma: "bg-transparent text-tinta-2 border-transparent hover:text-tinta",
   perigo: "bg-perigo-suave text-perigo border-perigo",
@@ -29,24 +36,37 @@ export function Botao({
   variante = "primario",
   tamanho = "medio",
   larguraTotal = false,
+  seta = false,
   className = "",
+  children,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & {
   variante?: Variante;
   tamanho?: Tamanho;
   larguraTotal?: boolean;
+  seta?: boolean;
 }) {
   return (
     <button
       {...props}
       className={[
-        "inline-flex items-center justify-center gap-2 rounded-base border font-corpo",
-        "transition-colors disabled:opacity-45 disabled:pointer-events-none",
+        "group inline-flex items-center justify-center gap-3 rounded-base border font-corpo",
+        "transition-all duration-100 disabled:opacity-45 disabled:pointer-events-none disabled:shadow-none",
         VARIANTES[variante],
         TAMANHOS[tamanho],
         larguraTotal ? "w-full" : "",
         className,
       ].join(" ")}
-    />
+    >
+      {children}
+      {seta ? (
+        <span
+          aria-hidden="true"
+          className="font-dados transition-transform duration-150 group-hover:translate-x-1"
+        >
+          &rarr;
+        </span>
+      ) : null}
+    </button>
   );
 }

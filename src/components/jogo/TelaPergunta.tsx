@@ -69,7 +69,7 @@ export function TelaPergunta({
       ) : (
         <div className="mt-5 flex flex-col gap-2">
           <span className="font-dados text-micro tracking-[0.12em] text-tinta-3 uppercase">
-            Sua resposta
+            Resposta da equipe
           </span>
           <span className="flex min-h-[48px] items-center rounded-base border border-linha-2 bg-superficie px-3.5 text-base text-tinta-3">
             {interativo ? "" : "digite aqui"}

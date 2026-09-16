@@ -63,8 +63,14 @@ Precisa ser legível a três metros de distância.
 verdade, não no olhômetro. Alvo de toque medido em celular real, não no navegador do
 computador.
 
-**Entrega:** uma página `/estilo` com todos os componentes juntos. É onde a gente discute
-e ajusta o visual **antes** de existir tela de produto — muito mais barato de mudar ali.
+**Entrega:** uma página `/estilo` com todos os componentes juntos, para discutir e ajustar o
+visual **antes** de existir tela de produto.
+
+> **Revisão de 16/09/2026.** A `/estilo` cumpriu o papel e foi removida junto com a
+> `/diagnostico`: ferramenta de quem constrói o site não é função de uma plataforma que
+> estranhos vão usar, e página aberta contando o estado do ambiente ainda é um risco à
+> parte. A direção visual passou a viver em `docs/visual.md`, que é onde ela se discute
+> agora, e o contraste em `scripts/contraste.py`.
 
 ---
 
