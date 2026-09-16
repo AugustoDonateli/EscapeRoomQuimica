@@ -106,6 +106,17 @@ A cor não segue o tema do celular: segue onde a pessoa está.
 
 No código isso é a classe `sala`, que troca as variáveis de cor de tudo que está dentro dela.
 
+## Ensaiar o banco antes da feira
+
+`scripts/ensaio-do-banco.sql` roda uma sessão inteira direto no banco — abre estação, responde,
+erra, pede dica, recebe toque do instrutor, encerra, avalia e calcula o placar — e confere as
+quatro promessas de idempotência em que o site se apoia quando a rede da feira cai e o celular
+reenvia. Cole no SQL Editor do Supabase e rode inteiro: ele termina em `rollback` e não deixa
+rastro.
+
+Ele cobre o **esquema**, não o código do site. Jogar de verdade no navegador continua sendo
+insubstituível.
+
 ## Quando a publicação não abre
 
 Qualquer tela mostra **"Falta configurar a publicação"** em vez de erro genérico, e lista

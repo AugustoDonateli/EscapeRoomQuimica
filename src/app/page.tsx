@@ -72,8 +72,8 @@ export default async function Totem() {
       </h1>
 
       <p className="mt-6 max-w-prose text-medio text-tinta-2">
-        A química é a chave. Cada bancada da sala guarda uma pergunta, e é a resposta certa que
-        destranca a bancada seguinte &mdash; até a última.
+        A química é a chave. Cada estação da sala guarda uma pergunta, e é a resposta certa que
+        destranca a estação seguinte &mdash; até a última.
       </p>
 
       {/* A sala desenhada como fileira de células da tabela periódica. Não é
@@ -82,7 +82,7 @@ export default async function Totem() {
       {sala.length > 0 ? (
         <section className="mt-9" aria-labelledby="titulo-sala">
           <h2 id="titulo-sala" className="font-dados text-micro tracking-[0.14em] text-tinta-3 uppercase">
-            {sala.length === 1 ? "1 bancada" : `${sala.length} bancadas`} nesta sala
+            {sala.length === 1 ? "1 estação" : `${sala.length} estações`} nesta sala
           </h2>
           <ul className="mt-3 flex flex-wrap gap-2">
             {sala.map((e) => (

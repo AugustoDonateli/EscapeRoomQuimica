@@ -50,7 +50,7 @@ export default async function PaginaSessao({
       ) : null}
 
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h1 className="font-display text-titulo leading-tight font-extrabold tracking-tight">
+        <h1 className="titulo-editorial text-[clamp(1.6rem,7.5vw,2.25rem)]">
           {sessao.equipe.nome}
         </h1>
         {pausada ? <Pilula estado="pausada" /> : encerrada ? <Pilula estado="concluida" /> : null}
@@ -67,25 +67,42 @@ export default async function PaginaSessao({
         />
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1">
-        <span className="font-dados text-micro text-tinta-2">
-          estação:{" "}
-          <strong className="text-tinta">
-            {sessao.estacaoAtual ? sessao.estacaoAtual.nome : "nenhuma aberta"}
-          </strong>
-        </span>
-        <span className="font-dados text-micro text-tinta-2">
-          acertos: <strong className="text-tinta">{sessao.acertos}</strong> de {sessao.tentativas}
-        </span>
-        <span className="font-dados text-micro text-tinta-2">
-          dicas: <strong className="text-tinta">{sessao.dicas}</strong>
-        </span>
-        {sessao.saidasDeTela > 0 ? (
-          <span className="font-dados text-micro text-alerta">
-            saídas de tela: <strong>{sessao.saidasDeTela}</strong>
-          </span>
-        ) : null}
+      <div className="mt-5 grid grid-cols-3 gap-2">
+        <div className="rounded-base border border-linha bg-superficie px-3 py-2">
+          <Rotulo>Acertos</Rotulo>
+          <p className="tabular mt-0.5 font-dados text-medio font-semibold">
+            {sessao.acertos}
+            <span className="text-tinta-3">/{sessao.tentativas}</span>
+          </p>
+        </div>
+        <div className="rounded-base border border-linha bg-superficie px-3 py-2">
+          <Rotulo>Dicas</Rotulo>
+          <p className="tabular mt-0.5 font-dados text-medio font-semibold">{sessao.dicas}</p>
+        </div>
+        <div
+          className={`rounded-base border px-3 py-2 ${
+            sessao.saidasDeTela > 0
+              ? "border-alerta bg-alerta-suave"
+              : "border-linha bg-superficie"
+          }`}
+        >
+          <Rotulo>Saiu da tela</Rotulo>
+          <p
+            className={`tabular mt-0.5 font-dados text-medio font-semibold ${
+              sessao.saidasDeTela > 0 ? "text-alerta" : ""
+            }`}
+          >
+            {sessao.saidasDeTela}
+          </p>
+        </div>
       </div>
+
+      <p className="mt-3 font-dados text-micro tracking-[0.1em] text-tinta-2 uppercase">
+        estação aberta:{" "}
+        <strong className="text-tinta">
+          {sessao.estacaoAtual ? sessao.estacaoAtual.nome : "nenhuma"}
+        </strong>
+      </p>
 
       {!encerrada ? (
         <div className="mt-5 flex flex-wrap gap-2">

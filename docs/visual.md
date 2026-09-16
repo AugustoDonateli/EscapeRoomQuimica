@@ -69,3 +69,8 @@ Cada tela fala com quem está na frente dela, e só com essa pessoa:
 
 Erro de sistema nunca vira culpa de quem está usando. *"E-mail ou senha não conferem"* é para
 credencial errada; falha de serviço diz que é falha de serviço.
+
+**Uma palavra por coisa.** É **estação**, em todo lugar — na tela do jogador, no painel, no
+banco e na boca do instrutor. "Bancada" chegou a existir nas telas do jogo por ser mais
+concreta, e saiu: o instrutor vai gritar "estação 3" no meio da sala, e duas palavras para a
+mesma coisa, no escuro e com o tempo correndo, é atrito à toa.

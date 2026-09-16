@@ -34,7 +34,10 @@ export default async function PaginaSala() {
 
   return (
     <>
-      <h1 className="font-display text-titulo font-bold tracking-tight">A sala agora</h1>
+      <p className="font-dados text-micro tracking-[0.22em] text-tinta-3 uppercase">
+        instrutor
+      </p>
+      <h1 className="titulo-editorial mt-1 text-[clamp(1.75rem,8vw,2.25rem)]">A sala agora</h1>
 
       {sessao ? (
         <Cartao destaque className="mt-5">
@@ -43,7 +46,7 @@ export default async function PaginaSala() {
             {sessao.status === "pausada" ? <Pilula estado="pausada" /> : null}
           </div>
 
-          <p className="mt-2 font-display text-titulo leading-tight font-bold">
+          <p className="titulo-editorial mt-2 text-[clamp(1.5rem,7vw,2rem)]">
             {sessao.equipe.nome}
           </p>
           <p className="font-dados text-micro text-tinta-2">
@@ -56,12 +59,12 @@ export default async function PaginaSala() {
             <Proveta
               restanteSegundos={sessao.tempo.restanteS}
               totalSegundos={config.duracao_sessao_min * 60}
-              tamanho="mini"
+              tamanho="sessao"
             />
           </div>
 
           <Link href={`/i/sessao/${sessao.id}`} className="mt-4 block">
-            <Botao tamanho="grande" larguraTotal>
+            <Botao tamanho="grande" larguraTotal seta>
               Abrir o painel da sessão
             </Botao>
           </Link>
@@ -112,7 +115,7 @@ export default async function PaginaSala() {
 
       {!sessao && chamadas.length === 0 && aguardando.length > 0 ? (
         <form action={chamarProxima} className="mt-6">
-          <Botao type="submit" tamanho="grande" larguraTotal>
+          <Botao type="submit" tamanho="grande" larguraTotal seta>
             Chamar a próxima equipe
           </Botao>
         </form>
@@ -122,10 +125,10 @@ export default async function PaginaSala() {
         {[
           { r: "Na fila", v: aguardando.length },
           { r: "Chamadas", v: chamadas.length },
-          { r: "Vagas no dia", v: restamHoje },
+          { r: "Vagas hoje", v: restamHoje },
         ].map((i) => (
           <div key={i.r} className="rounded-base border border-linha bg-superficie px-3 py-2.5">
-            <Rotulo>{i.r}</Rotulo>
+            <Rotulo className="truncate">{i.r}</Rotulo>
             <p className="tabular mt-1 font-display text-grande leading-none font-extrabold">
               {i.v}
             </p>

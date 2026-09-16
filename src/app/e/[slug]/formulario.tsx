@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { responder } from "./acoes";
 import { Botao } from "@/components/ui/Botao";
 import { Proveta } from "@/components/ui/Proveta";
+import { Tentativas } from "@/components/ui/Tentativas";
 import type { Pergunta } from "@/lib/estacao";
 
 /**
@@ -20,11 +21,13 @@ export function FormularioResposta({
   pergunta,
   feitas,
   total,
+  tentativasPorPergunta,
 }: {
   slug: string;
   pergunta: Pergunta;
   feitas: number;
   total: number;
+  tentativasPorPergunta: number;
 }) {
   const router = useRouter();
   const [resultado, acao, enviando] = useActionState(responder, null);
@@ -83,25 +86,32 @@ export function FormularioResposta({
       <input type="hidden" name="msGastos" value={Date.now() - inicio.current} />
       <input type="hidden" name="resposta" value={pergunta.tipo === "multipla" ? escolha : texto} />
 
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
         <span className="font-dados text-micro tracking-[0.12em] text-tinta-3 uppercase">
           pergunta {feitas + 1} de {total}
         </span>
-        <span className="font-dados text-micro tracking-[0.12em] text-tinta-3 uppercase">
-          {pergunta.tentativasRestantes === 1
-            ? "última tentativa"
-            : `${pergunta.tentativasRestantes} tentativas`}
-        </span>
+        <Tentativas restantes={pergunta.tentativasRestantes} total={tentativasPorPergunta} />
       </div>
 
-      <Proveta
-        restanteSegundos={restante}
-        totalSegundos={pergunta.tempoLimiteS}
-        tamanho="mini"
-        limiteAlertaSegundos={Math.max(10, Math.round(pergunta.tempoLimiteS / 3))}
-      />
+      {/* O enunciado é o maior texto da plataforma inteira, e é de propósito:
+          seis pessoas leem este parágrafo ao mesmo tempo, no escuro, por cima
+          do ombro de quem segura o celular. Estava em 17px. */}
+      <h1 className="text-[clamp(1.3rem,5.8vw,1.75rem)] leading-[1.25] font-semibold text-balance">
+        {pergunta.enunciado}
+      </h1>
 
-      <p className="text-medio leading-snug font-semibold text-balance">{pergunta.enunciado}</p>
+      <div>
+        <span className="font-dados text-micro tracking-[0.12em] text-tinta-3 uppercase">
+          tempo desta pergunta
+        </span>
+        <Proveta
+          className="mt-1.5"
+          restanteSegundos={restante}
+          totalSegundos={pergunta.tempoLimiteS}
+          tamanho="mini"
+          limiteAlertaSegundos={Math.max(10, Math.round(pergunta.tempoLimiteS / 3))}
+        />
+      </div>
 
       {pergunta.tipo === "multipla" ? (
         <div role="radiogroup" aria-label="Alternativas" className="flex flex-col gap-2">
@@ -112,13 +122,17 @@ export function FormularioResposta({
               role="radio"
               aria-checked={escolha === a}
               onClick={() => setEscolha(a)}
-              className={`flex min-h-[56px] items-center gap-3 rounded-base border px-3.5 text-left text-base ${
+              className={`flex min-h-[64px] items-center gap-3 rounded-base border px-3 text-left text-medio ${
                 escolha === a
-                  ? "border-acento bg-acento-suave text-tinta"
+                  ? "border-acento bg-acento-suave text-tinta shadow-dura"
                   : "border-linha-2 bg-superficie text-tinta"
               }`}
             >
-              <span className="font-dados text-mini text-tinta-3">
+              <span
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-base border font-dados text-mini ${
+                  escolha === a ? "border-acento text-acento" : "border-linha-2 text-tinta-3"
+                }`}
+              >
                 {String.fromCharCode(65 + i)}
               </span>
               <span className="min-w-0">{a}</span>
@@ -131,7 +145,7 @@ export function FormularioResposta({
             htmlFor="resposta-texto"
             className="font-dados text-micro tracking-[0.12em] text-tinta-3 uppercase"
           >
-            Sua resposta
+            Resposta da equipe
           </label>
           <input
             id="resposta-texto"
@@ -139,18 +153,22 @@ export function FormularioResposta({
             onChange={(e) => setTexto(e.target.value)}
             autoComplete="off"
             autoCapitalize="off"
-            className="min-h-[56px] rounded-base border border-linha-2 bg-superficie px-3.5 text-medio text-tinta"
+            className="min-h-[64px] rounded-base border border-linha-2 bg-superficie px-3.5 text-medio text-tinta"
           />
         </div>
       )}
 
       {resultado?.acertou ? (
-        <p role="status" className="rounded-base bg-acento px-3 py-2.5 text-base font-semibold text-fundo">
-          Acertaram! Indo para a próxima…
+        <p
+          role="status"
+          className="rounded-base bg-acento px-4 py-4 text-fundo shadow-dura-forte"
+        >
+          <span className="block titulo-editorial text-[2rem]">Acertaram.</span>
+          <span className="mt-1 block text-mini opacity-90">Indo para a próxima…</span>
         </p>
       ) : resultado && resultado.acertou === false ? (
         <p role="alert" className="rounded-base bg-perigo-suave px-3 py-2.5 text-base text-perigo">
-          Não é essa. Pensem de novo no que a bancada está mostrando.
+          Não é essa. Pensem de novo no que a estação está mostrando.
         </p>
       ) : resultado?.erro ? (
         <p role="alert" className="rounded-base bg-alerta-suave px-3 py-2.5 text-base text-alerta">
