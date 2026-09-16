@@ -258,7 +258,7 @@ Decidido no quiz visual de 11/09/2026:
 | Paleta | Laboratório noturno (grafite esverdeado, ciano frio, azul) |
 | Tipografia | Bricolage Grotesque (display) + IBM Plex Sans (texto) + IBM Plex Mono (dados) |
 | Cantos | Levemente arredondado — 4 px |
-| Fundo | ~~Liso, sem textura~~ → **papel quadriculado com grão** (revisto em 16/09, ver abaixo) |
+| Fundo | **Liso, sem textura** — confirmado em 16/09 depois de uma tentativa reprovada |
 | Voz do texto | Direto e humano — *"Sua vez está chegando — fica por aqui!"* |
 | Marca | Número atômico (casinha da tabela periódica) |
 | Cronômetro | Proveta esvaziando (barra de líquido que baixa) |
@@ -292,9 +292,13 @@ dois motivos:
    Foi exatamente essa a crítica recebida — *"parece completamente feito de inteligência
    artificial"*.
 
-O fundo agora é papel quadriculado de 24 px com grão, os dois atrás do conteúdo. A direção
-inteira, com a lista fechada de recursos permitidos, está em **`docs/visual.md`**.
+A tentativa de resposta foi papel quadriculado de 24 px com grão. **Reprovada no mesmo dia,
+e a escolha original do quiz fica valendo:** grade fina de fundo é hoje uma das assinaturas
+mais reconhecíveis de site gerado por IA, então ela produzia justamente o efeito que devia
+combater. O fundo é liso, e textura de fundo não volta — está na lista de proibições de
+`docs/visual.md`.
 
-**Esta decisão contraria uma escolha feita no quiz.** Tirar a textura é um bloco de CSS em
-`globals.css` (`body::before`, `body::after` e a grade do `.sala`): se a escolha original
-valer mais que o efeito, ela sai em uma edição.
+A lição que sobra é sobre onde a identidade mora. Não é no pano de fundo, que qualquer
+gerador aplica em um parâmetro. É na tipografia que aplica de verdade, na célula de tabela
+periódica derivada do nome da estação, na fita de risco que só aparece no que está bloqueado
+e na manchete cujos números saem do banco. Esses não se copiam sem entender o projeto.

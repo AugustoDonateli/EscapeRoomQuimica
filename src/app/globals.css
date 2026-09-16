@@ -3,11 +3,18 @@
 /* ---------------------------------------------------------------------------
    Escape Químico — sistema visual
 
-   DIREÇÃO: caderno de laboratório sob pressão. Papel quadriculado, tinta quase
-   preta, estrutura à vista. A referência não é site de produto — é a página de
-   anotação de bancada, com índice na margem, número grande e fita de risco na
-   porta. Está escrito em docs/visual.md, com a lista fechada de recursos
-   permitidos; o que não está lá não entra.
+   DIREÇÃO: caderno de laboratório sob pressão. Tinta quase preta sobre papel,
+   estrutura à vista, índice na margem, número grande e fita de risco na porta.
+   Está escrito em docs/visual.md, com a lista fechada de recursos permitidos;
+   o que não está lá não entra.
+
+   O FUNDO É LISO. Houve uma tentativa de quadriculado de caderno com grão, e
+   ela foi reprovada por dois motivos que valem ficar escritos: fundo de grade
+   fina virou marca de site gerado por IA — é o efeito oposto do pretendido — e
+   liso já era a escolha registrada no quiz visual. Textura de fundo não volta.
+   O peso da identidade fica onde ele resiste a olhar de perto: a tipografia, a
+   célula de tabela periódica, a fita de risco, a sombra dura e a manchete com
+   os números que vêm do banco.
 
    Duas paletas, escolhidas por CONTEXTO FÍSICO e não pelo tema do celular:
 
@@ -42,10 +49,6 @@
   --cor-perigo: #a01f35;
   --cor-perigo-suave: #f9e6e8;
 
-  /* Textura do papel: a linha do quadriculado e o grão. */
-  --cor-grade: #15181a12;
-  --grao-opacidade: 0.5;
-
   /* Sombra dura, deslocada, sem desfoque: estrutura à vista em vez de borda
      de 1px em tudo. Borda em tudo é o que faz uma tela parecer lista de
      caixas geradas. */
@@ -76,9 +79,6 @@
   --cor-alerta-suave: #241a0e;
   --cor-perigo: #ff7089;
   --cor-perigo-suave: #2a1319;
-
-  --cor-grade: #e2ebe80f;
-  --grao-opacidade: 0.35;
 
   --sombra-dura: 3px 3px 0 0 var(--cor-linha-2);
   --sombra-dura-forte: 4px 4px 0 0 var(--cor-linha-2);
@@ -139,34 +139,6 @@
     font-size: var(--text-base);
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
-    isolation: isolate;
-  }
-
-  /* O papel. Quadriculado de 24px e grão, os dois ATRÁS do conteúdo (z -1):
-     textura não pode encostar no contraste de texto de verdade. */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-color: var(--cor-fundo);
-    background-image:
-      linear-gradient(to right, var(--cor-grade) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--cor-grade) 1px, transparent 1px);
-    background-size: 24px 24px;
-    background-position: center top;
-  }
-
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: var(--grao-opacidade);
-    /* Grão gerado no próprio SVG: nenhum arquivo de imagem para baixar. */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)' opacity='0.09'/%3E%3C/svg%3E");
   }
 
   /* O dedo erra e o teclado precisa funcionar: foco sempre visível. */
@@ -182,19 +154,6 @@
 }
 
 @layer components {
-  /* Dentro da sala o papel também existe.
-     O quadriculado do :root é desenhado em body::before, que fica ATRÁS de
-     tudo; um container .sala pinta o próprio fundo por cima e apagaria a
-     textura. Então a grade é redesenhada aqui, no mesmo passo de 24px, para
-     que a identidade não desapareça justamente nas telas do jogo. */
-  .sala {
-    background-image:
-      linear-gradient(to right, var(--cor-grade) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--cor-grade) 1px, transparent 1px);
-    background-size: 24px 24px;
-    background-position: center top;
-  }
-
   /* Fita de risco da porta: o único lugar em que a plataforma grita. Serve
      para o que está FECHADO ou INTERROMPIDO, nunca para decorar. */
   .fita-risco {
@@ -252,12 +211,6 @@
 --------------------------------------------------------------------------- */
 @media print {
   .esconder-na-impressao {
-    display: none !important;
-  }
-
-  /* Papel de verdade não precisa de papel desenhado. */
-  body::before,
-  body::after {
     display: none !important;
   }
 
